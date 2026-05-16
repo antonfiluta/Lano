@@ -22,9 +22,7 @@
     /* Окружение и модули (Настройки для Angular 17+) */
     "skipLibCheck": true,
     "isolatedModules": true,
-    "downlevelIteration": true,
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
     "importHelpers": true,
     "target": "ES2022",
     "lib": ["ES2022", "DOM"],
@@ -34,9 +32,10 @@
 
     /* Пути для абсолютных импортов (Алиасы) */
     "paths": {
-      "@core/*": ["./src/app/core/*"],
-      "@features/*": ["./src/app/features/*"],
-      "@shared/*": ["./src/app/shared/*"]
+      "@core/*": ["src/app/core/*"],
+      "@shared/*": ["src/app/shared/*"],
+      "@features/*": ["src/app/features/*"],
+      "@env/*": ["src/environments/*"]
     }
   },
   "angularCompilerOptions": {
