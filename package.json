@@ -11,7 +11,8 @@
     "lint:fix": "ng lint --fix",
     "format": "prettier . --write",
     "format:check": "prettier . --check",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "gen-types": "supabase gen types typescript --project-id srqiqjxsehhdthcvyylk --schema public > src/app/core/types/database.types.ts"
   },
   "private": true,
   "packageManager": "npm@11.12.1",
@@ -19,9 +20,10 @@
     "@angular/common": "^21.2.0",
     "@angular/compiler": "^21.2.0",
     "@angular/core": "^21.2.0",
-    "@angular/forms": "^21.2.0",
+    "@angular/forms": "^21.2.15",
     "@angular/platform-browser": "^21.2.0",
     "@angular/router": "^21.2.0",
+    "@ngrx/signals": "^21.1.0",
     "@primeuix/themes": "^2.0.3",
     "@supabase/supabase-js": "^2.105.4",
     "primeicons": "^7.0.0",

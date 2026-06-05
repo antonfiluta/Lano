@@ -63,7 +63,10 @@ module.exports = defineConfig([
   eslintConfigPrettier,
   {
     files: ['**/*.html'],
-    extends: [angular.configs.templateRecommended, angular.configs.templateAccessibility],
+    extends: [
+      angular.configs.templateRecommended,
+      angular.configs.templateAccessibility,
+    ],
     rules: {},
   },
 ]);

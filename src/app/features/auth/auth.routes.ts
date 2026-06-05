@@ -9,7 +9,8 @@ export const AUTH_ROUTES: Routes = [
   {
     path: 'register',
     title: 'Lano Register',
-    loadComponent: () => import('./feature/register/register').then((m) => m.Register),
+    loadComponent: () =>
+      import('./feature/register/register').then((m) => m.Register),
   },
   {
     path: '',
