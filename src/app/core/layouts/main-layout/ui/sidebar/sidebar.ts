@@ -12,9 +12,9 @@ export class Sidebar {
   public authStore = inject(AuthStore);
   public router = inject(Router);
 
-  public logout = async () => {
+  public async logout() {
     if (await this.authStore.logout()) {
       this.router.navigateByUrl('/auth');
     }
-  };
+  }
 }

@@ -17,10 +17,10 @@ export const authGuardsFabric = (isPrivate: boolean): CanActivateFn => {
     );
 
     if (isPrivate && !authStore.isAuthenticated()) {
-      return router.navigateByUrl('/auth/login');
+      return router.createUrlTree(['/auth/login']);
     }
     if (!isPrivate && authStore.isAuthenticated()) {
-      return router.navigateByUrl('/dashboard');
+      return router.createUrlTree(['/dashboard']);
     }
     return true;
   };

@@ -3,7 +3,7 @@ import {
   AuthUser,
   LoginData,
   RegisterData,
-  sessionSubscritionModel,
+  sessionSubscriptionModel,
 } from '@features/auth/models/user.model';
 import {
   patchState,
@@ -17,7 +17,7 @@ import { Profile } from '@features/auth/models/profile.model';
 import { ProfileRepository } from '../profile.repository/profile.repository';
 import { ErrorHandler } from '@core/services/error-handler/error-handler';
 import { mapProfile, mapUser } from '@features/auth/utils/data.mapper';
-import { AuthChangeEvent, Session } from '@supabase/supabase-js';
+import { Session } from '@supabase/supabase-js';
 
 const initialAuthState: AuthState = {
   user: null,
@@ -100,7 +100,7 @@ export const AuthStore = signalStore(
         }
       };
 
-      let sessionSubscrition: sessionSubscritionModel | null = null;
+      let sessionSubscrition: sessionSubscriptionModel | null = null;
 
       return {
         async login(credentials: LoginData): Promise<boolean> {
@@ -127,18 +127,18 @@ export const AuthStore = signalStore(
           } catch (error) {
             errorHandler.handle(error, 'Initialization');
           } finally {
-            if (!sessionSubscrition) {
-              sessionSubscrition = authRepo.onAuthStateChange(
-                async (_event: AuthChangeEvent, session: Session | null) => {
-                  await applySession(session);
-                },
-              );
-            }
-
             patchState(store, {
               initialized: true,
               isLoading: false,
             });
+
+            if (!sessionSubscrition) {
+              sessionSubscrition = authRepo.onAuthStateChange(
+                async (_, session) => {
+                  await applySession(session);
+                },
+              );
+            }
           }
         },
       };

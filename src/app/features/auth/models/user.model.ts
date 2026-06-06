@@ -14,7 +14,7 @@ export type RegisterData = LoginData & {
   name: string;
 };
 
-export interface sessionSubscritionModel {
+export interface sessionSubscriptionModel {
   data: {
     subscription: Subscription;
   };
