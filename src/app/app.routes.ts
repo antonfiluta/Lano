@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { authGuard } from '@core/auth/guards/auth-guard/auth-guard';
+import { authRedirectGuard } from '@core/auth/guards/auth-redirect/auth-redirect-guard';
 
 export const routes: Routes = [
   {
@@ -12,6 +14,7 @@ export const routes: Routes = [
           import('@features/auth/auth.routes').then((m) => m.AUTH_ROUTES),
       },
     ],
+    canActivate: [authRedirectGuard],
   },
   {
     path: '',
@@ -43,6 +46,7 @@ export const routes: Routes = [
         redirectTo: 'dashboard',
       },
     ],
+    canActivate: [authGuard],
   },
   {
     path: 'not-found',
