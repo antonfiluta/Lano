@@ -39,7 +39,7 @@
     "@angular/compiler-cli": "^21.2.0",
     "@eslint/js": "^10.0.1",
     "@tailwindcss/postcss": "^4.1.12",
-    "angular-eslint": "21.4.0",
+    "angular-eslint": "^22.0.0",
     "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "husky": "^8.0.0",
