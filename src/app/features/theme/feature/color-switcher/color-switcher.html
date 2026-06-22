@@ -1,1 +1,54 @@
-<p>color-switcher works!</p>
+<div class="relative">
+  <p-button
+    icon="pi pi-palette text-lg!"
+    pStyleClass="@next"
+    enterFromClass="hidden"
+    enterActiveClass="animate-scalein"
+    leaveToClass="hidden"
+    leaveActiveClass="animate-fadeout"
+    [hideOnOutsideClick]="true"
+    type="button"
+    rounded
+  />
+  <div
+    class="bg-surface-0 dark:bg-surface-900 border-surface rounded-border absolute top-13 right-0 hidden w-72 origin-top border p-4 shadow-[0px_3px_5px_rgba(0,0,0,0.02),0px_0px_2px_rgba(0,0,0,0.05),0px_1px_4px_rgba(0,0,0,0.08)]"
+  >
+    <div class="flex flex-col gap-4">
+      <div>
+        <span class="text-muted-color text-sm font-semibold">Primary</span>
+        <div class="flex flex-wrap justify-start gap-2 pt-2">
+          @for (primaryColor of primaryColors; track primaryColor) {
+            <button
+              type="button"
+              [title]="primaryColor"
+              (click)="setPrimary(primaryColor)"
+              class="flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full shadow outline-offset-1"
+              [ngClass]="{
+                'outline-primary outline': primaryColor === store.primary(),
+              }"
+              [style.background-color]="'var(--p-' + primaryColor + '-500)'"
+            ></button>
+          }
+        </div>
+      </div>
+
+      <div>
+        <span class="text-muted-color text-sm font-semibold">Surface</span>
+        <div class="flex flex-wrap justify-start gap-2 pt-2">
+          @for (surfaceColor of surfaceColors; track surfaceColor) {
+            <button
+              type="button"
+              [title]="surfaceColor"
+              (click)="setSurface(surfaceColor)"
+              [class]="'flex h-5 w-5 shrink-0 cursor-pointer items-center justify-center rounded-full shadow outline-offset-1'"
+              [ngClass]="{
+                'outline-primary outline': surfaceColor === store.surface(),
+              }"
+              [style.background-color]="surfacePalettes[surfaceColor][500]"
+            ></button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

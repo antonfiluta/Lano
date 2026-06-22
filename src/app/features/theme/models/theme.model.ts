@@ -29,4 +29,12 @@ export type PrimaryColor =
   | 'yellow'
   | 'fuchsia';
 
-export type SurfaceColor = 'slate' | 'gray' | 'zinc' | 'neutral' | 'stone';
+export type SurfaceColor =
+  | 'slate'
+  | 'gray'
+  | 'zinc'
+  | 'neutral'
+  | 'stone'
+  | 'soho'
+  | 'viva'
+  | 'ocean';

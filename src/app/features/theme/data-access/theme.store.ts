@@ -8,6 +8,7 @@ import {
 } from '@features/theme/models/theme.model';
 import {
   initialThemeState,
+  SURFACE_PALETTES,
   THEME_STORAGE_KEY,
 } from '@features/theme/utils/theme.constants';
 import {
@@ -68,7 +69,6 @@ export const themeStore = signalStore(
             const saved: unknown = JSON.parse(rawThemeState);
             if (isThemeState(saved)) {
               patchState(store, saved);
-              this._applyTheme();
             } else {
               throw new Error('Incorrect Theme Settings Data');
             }
@@ -77,6 +77,8 @@ export const themeStore = signalStore(
             errorHandler.handle(error);
           }
         }
+
+        this._applyTheme();
       },
 
       _persist() {
@@ -89,16 +91,20 @@ export const themeStore = signalStore(
       _applyMode() {
         const darkMode = store.isDark();
         document.documentElement.classList.toggle('dark', darkMode);
+
+        this._applyPrimary(); // ← добавить
+        this._applySurface();
       },
 
       _applySurface() {
         const surface = store.surface();
-        updateSurfacePalette(createPalette(surface));
+        const palette = SURFACE_PALETTES[surface];
+        updateSurfacePalette(palette);
       },
 
       _applyPrimary() {
         const primary = store.primary();
-        const surface = store.surface();
+        // const surface = store.surface();
 
         updatePreset({
           semantic: {
@@ -106,24 +112,24 @@ export const themeStore = signalStore(
             colorScheme: {
               light: {
                 primary: {
-                  color: `{${primary}.500}`,
+                  color: '{primary.500}',
                   contrastColor: '#ffffff',
-                  hoverColor: `{${primary}.600}`,
-                  activeColor: `{${primary}.700}`,
+                  hoverColor: '{primary.600}',
+                  activeColor: '{primary.700}',
                 },
                 highlight: {
-                  background: `{${primary}.50}`,
-                  focusBackground: `{${primary}.100}`,
-                  color: `{${primary}.700}`,
-                  focusColor: `{${primary}.800}`,
+                  background: '{primary.50}',
+                  focusBackground: '{primary.100}',
+                  color: '{primary.700}',
+                  focusColor: '{primary.800}',
                 },
               },
               dark: {
                 primary: {
-                  color: `{${primary}.400}`,
-                  contrastColor: `{${surface}.900}`,
-                  hoverColor: `{${primary}.300}`,
-                  activeColor: `{${primary}.200}`,
+                  color: '{primary.400}',
+                  contrastColor: '{surface.900}',
+                  hoverColor: '{primary.300}',
+                  activeColor: '{primary.200}',
                 },
                 highlight: {
                   background:
@@ -147,9 +153,11 @@ export const themeStore = signalStore(
 
       _initialize() {
         this._restore();
+
         window
           .matchMedia('(prefers-color-scheme: dark)')
           .addEventListener('change', () => {
+            console.log('work');
             if (store.mode() === 'system') this._applyMode();
           });
       },
@@ -157,7 +165,7 @@ export const themeStore = signalStore(
   ),
   withHooks({
     onInit(store) {
-      store._initialize();
+      setTimeout(() => store._initialize());
     },
   }),
 );
