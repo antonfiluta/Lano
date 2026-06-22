@@ -4,7 +4,6 @@
   "compileOnSave": false,
   "compilerOptions": {
     /* Базовые настройки путей и вывода */
-    "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
     "declaration": false,
@@ -32,10 +31,10 @@
 
     /* Пути для абсолютных импортов (Алиасы) */
     "paths": {
-      "@core/*": ["src/app/core/*"],
-      "@shared/*": ["src/app/shared/*"],
-      "@features/*": ["src/app/features/*"],
-      "@env/*": ["src/environments/*"]
+      "@core/*": ["./src/app/core/*"],
+      "@shared/*": ["./src/app/shared/*"],
+      "@features/*": ["./src/app/features/*"],
+      "@env/*": ["./src/environments/*"]
     }
   },
   "angularCompilerOptions": {
