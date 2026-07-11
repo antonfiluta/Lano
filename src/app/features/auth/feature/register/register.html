@@ -1,0 +1,30 @@
+<p>register works!</p>
+<a routerLink="/auth/login" class="text-blue-800 underline">go to login</a>
+<p>IsAuthenticated: {{ store.isAuthenticated() }}</p>
+<p>UserData: {{ store.user()?.email || 'null' }}</p>
+
+<input
+  type="text"
+  class="border-2"
+  placeholder="email"
+  [formField]="registerForm.email"
+/>
+<br /><br />
+
+<input
+  type="text"
+  class="border-2"
+  placeholder="name"
+  [formField]="registerForm.name"
+/>
+
+<br /><br />
+
+<input
+  type="password"
+  class="border-2"
+  placeholder="password"
+  [formField]="registerForm.password"
+/>
+
+<button (click)="submit()">Button</button>

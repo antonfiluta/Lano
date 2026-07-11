@@ -1,0 +1,11 @@
+<header class="flex items-center justify-between py-5 pr-3">
+  <h1 class="text-primary-500 text-2xl font-black">LANO</h1>
+  <div class="flex items-center gap-4">
+    <app-theme-switcher></app-theme-switcher>
+    <app-color-switcher></app-color-switcher>
+    <div class="flex flex-col items-end gap-2">
+      <span class="text-primary-500">{{ store.displayName() }}</span>
+      <span class="text-primary-800">{{ store.user()?.email }}</span>
+    </div>
+  </div>
+</header>
