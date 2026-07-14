@@ -1,17 +1,6 @@
-import {
-  PrimaryColor,
-  SurfaceColor,
-  ThemeMode,
-  ThemeState,
-} from '../models/theme.model';
+import { PrimaryColor, SurfaceColor } from '../models/theme.model';
 
 export const THEME_STORAGE_KEY = 'lano-theme';
-
-export const initialThemeState: ThemeState = {
-  mode: ThemeMode.System,
-  primary: 'emerald',
-  surface: 'gray',
-};
 
 export const PRIMARY_COLORS: PrimaryColor[] = [
   'emerald',

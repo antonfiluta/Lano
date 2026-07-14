@@ -1,11 +1,43 @@
-<header class="flex items-center justify-between py-5 pr-3">
-  <h1 class="text-primary-500 text-2xl font-black">LANO</h1>
-  <div class="flex items-center gap-4">
+<header
+  class="bg-surface-0/70 dark:bg-surface-800/70 border-surface-200 dark:border-surface-700 flex items-center justify-between border-b px-6 py-4 shadow-sm backdrop-blur-lg"
+>
+  <!-- Логотип / Название -->
+  <div class="flex items-center gap-3">
+    <div
+      class="bg-primary-500 shadow-primary-500/20 flex h-10 w-10 items-center justify-center rounded-lg shadow-md"
+    >
+      <i class="pi pi-check text-xl text-white"></i>
+    </div>
+    <span
+      class="from-primary-500 to-primary-400 bg-linear-to-r bg-clip-text text-2xl font-black tracking-wider text-transparent"
+    >
+      LANO
+    </span>
+  </div>
+
+  <!-- Правая часть: переключатели темы + профиль -->
+  <div class="flex items-center gap-5">
     <app-theme-switcher></app-theme-switcher>
     <app-color-switcher></app-color-switcher>
-    <div class="flex flex-col items-end gap-2">
-      <span class="text-primary-500">{{ store.displayName() }}</span>
-      <span class="text-primary-800">{{ store.user()?.email }}</span>
+
+    <!-- Профиль -->
+    <div class="flex items-center gap-3">
+      <div class="flex flex-col items-end">
+        <span
+          class="text-surface-800 dark:text-surface-200 text-sm font-semibold"
+        >
+          {{ store.displayName() }}
+        </span>
+        <span class="text-surface-500 dark:text-surface-400 text-xs">
+          {{ store.user()?.email }}
+        </span>
+      </div>
+      <!-- Аватар (пока заглушка, позже можно загружать из профиля) -->
+      <div
+        class="bg-primary-100 dark:bg-primary-800 text-primary-600 dark:text-primary-200 flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold"
+      >
+        {{ store.displayName().charAt(0).toUpperCase() }}
+      </div>
     </div>
   </div>
 </header>

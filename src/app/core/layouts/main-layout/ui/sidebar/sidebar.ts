@@ -1,6 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthStore } from '@features/auth/data-access/auth.store/auth.store';
+import { AuthStore } from '@core/stores/auth.store';
 
 @Component({
   selector: 'app-sidebar',
@@ -9,12 +8,9 @@ import { AuthStore } from '@features/auth/data-access/auth.store/auth.store';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  public authStore = inject(AuthStore);
-  public router = inject(Router);
+  private authStore = inject(AuthStore);
 
   public async logout() {
-    if (await this.authStore.logout()) {
-      this.router.navigateByUrl('/auth');
-    }
+    await this.authStore.logout();
   }
 }

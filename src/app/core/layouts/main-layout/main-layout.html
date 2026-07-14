@@ -1,8 +1,11 @@
-<div class="flex">
-  <app-sidebar></app-sidebar>
-  <section class="relative w-full">
-    <app-header lass="w-ful sticky top-0 text-center"></app-header>
-    <!-- <header class="w-ful sticky top-0 text-center">Header</header> -->
-    <router-outlet></router-outlet>
+<div
+  class="from-surface-50 to-surface-100 dark:from-surface-900 dark:to-surface-950 flex h-screen overflow-hidden bg-linear-to-br"
+>
+  <app-sidebar class="z-30"></app-sidebar>
+  <section class="flex flex-1 flex-col overflow-hidden">
+    <app-header class="sticky top-0 z-20"></app-header>
+    <main class="flex-1 overflow-y-auto p-6">
+      <router-outlet></router-outlet>
+    </main>
   </section>
 </div>

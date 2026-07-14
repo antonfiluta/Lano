@@ -2,6 +2,7 @@ export interface ThemeState {
   mode: ThemeMode;
   primary: PrimaryColor;
   surface: SurfaceColor;
+  trigger: boolean;
 }
 
 export enum ThemeMode {

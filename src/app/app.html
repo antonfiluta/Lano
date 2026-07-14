@@ -1,1 +1,33 @@
-<router-outlet></router-outlet>
+<p-toast key="global" stackVisibleLimit="7" />
+
+@if (authStore.initialized()) {
+  <!-- @if (false) { -->
+  <router-outlet></router-outlet>
+} @else {
+  <app-background>
+    <div class="relative flex flex-col items-center gap-6">
+      <app-logo></app-logo>
+
+      <div class="flex flex-col items-center gap-2">
+        <span class="text-xl font-semibold text-slate-700 dark:text-slate-200"
+          >Welcome to Lano!</span
+        >
+        <span class="text-sm text-slate-500 dark:text-slate-400"
+          >Preparing your workspace</span
+        >
+      </div>
+
+      <div class="mt-4 flex items-center gap-2">
+        <div
+          class="bg-primary-500 animate-delay-none h-2 w-2 animate-bounce rounded-full"
+        ></div>
+        <div
+          class="bg-primary-500 h-2 w-2 animate-bounce rounded-full [animation-delay:0.1s]"
+        ></div>
+        <div
+          class="bg-primary-500 h-2 w-2 animate-bounce rounded-full [animation-delay:0.2s]"
+        ></div>
+      </div>
+    </div>
+  </app-background>
+}

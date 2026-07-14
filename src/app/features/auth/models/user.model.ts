@@ -1,5 +1,3 @@
-import { Subscription } from '@supabase/supabase-js';
-
 export interface AuthUser {
   id: string;
   email?: string;
@@ -14,8 +12,4 @@ export type RegisterData = LoginData & {
   name: string;
 };
 
-export interface sessionSubscriptionModel {
-  data: {
-    subscription: Subscription;
-  };
-}
+export type AuthRequest = Promise<{ error: Error | null }>;
