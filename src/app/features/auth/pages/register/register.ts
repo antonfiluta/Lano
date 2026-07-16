@@ -12,18 +12,14 @@ import { RegisterData } from '@features/auth/models/user.model';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ButtonModule } from 'primeng/button';
 import { Logo } from '@shared/ui/logo/logo';
-import { FormsModule } from '@angular/forms';
-import { IconFieldModule } from 'primeng/iconfield';
-import { InputIconModule } from 'primeng/inputicon';
-import { InputTextModule } from 'primeng/inputtext';
-import { Search } from '@primeicons/angular/search';
-import { Times } from '@primeicons/angular/times';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
-const registerModel = signal<RegisterData>({
+const registerModel = {
   email: '',
   name: '',
   password: '',
-});
+};
 
 @Component({
   selector: 'app-register',
@@ -33,41 +29,45 @@ const registerModel = signal<RegisterData>({
     ConfirmPopupModule,
     ButtonModule,
     Logo,
-    IconFieldModule,
-    InputIconModule,
-    InputTextModule,
-    FormsModule,
-    Search,
-    Times,
+    ConfirmDialogModule,
   ],
+  providers: [ConfirmationService],
   templateUrl: './register.html',
   styleUrl: './register.css',
 })
 export class Register {
+  private confirmationService = inject(ConfirmationService);
   public store = inject(AuthStore);
 
-  public registerForm = form(registerModel, (schemaPath) => {
-    required(schemaPath.email, { message: 'Email is required' });
-    email(schemaPath.email, { message: 'Please enter a valid email address' });
-
-    required(schemaPath.name, { message: 'Name is required' });
-    minLength(schemaPath.name, 2, {
-      message: 'Name must be at least 2 characters',
-    });
-
-    required(schemaPath.password, { message: 'Password is required' });
-    minLength(schemaPath.password, 6, {
-      message: 'Password must be at least 6 characters',
-    });
-  });
-
   public showPassword = signal(false);
+
+  public registerForm = form(
+    signal<RegisterData>(registerModel),
+    (schemaPath) => {
+      required(schemaPath.email, { message: 'Email is required' });
+      email(schemaPath.email, {
+        message: 'Please enter a valid email address',
+      });
+
+      required(schemaPath.name, { message: 'Name is required' });
+      minLength(schemaPath.name, 2, {
+        message: 'Name must be at least 2 characters',
+      });
+
+      required(schemaPath.password, { message: 'Password is required' });
+      minLength(schemaPath.password, 6, {
+        message: 'Password must be at least 6 characters',
+      });
+    },
+  );
 
   public togglePasswordVisibility() {
     this.showPassword.update((v) => !v);
   }
 
-  public async submit() {
+  public async submit(event: Event) {
+    event.preventDefault();
+
     const email = this.registerForm.email().value();
     const name = this.registerForm.name().value();
     const password = this.registerForm.password().value();
@@ -75,24 +75,21 @@ export class Register {
     await this.store.register({ email, name, password });
   }
 
-  public clearForm() {
-    // this.confirmationService.confirm({
-    //   target: event.target as EventTarget,
-    //   message: 'Are you sure you want to clear all fields?',
-    //   icon: 'pi pi-exclamation-triangle',
-    //   accept: () => {
-    //     // Reset form model to initial empty state
-    //     registerModel.set({
-    //       email: '',
-    //       name: '',
-    //       password: '',
-    //     });
-    //     // Reset touched/dirty states
-    //     this.registerForm().reset();
-    //   },
-    //   reject: () => {
-    //     // Do nothing
-    //   },
-    // });
+  public clearForm(event: Event) {
+    this.confirmationService.confirm({
+      target: event.target as EventTarget,
+      message: 'Are you sure that you want to clear form?',
+      header: 'Confirmation',
+      closable: true,
+      closeOnEscape: true,
+      icon: 'pi pi-exclamation-triangle',
+      defaultFocus: 'accept',
+      dismissableMask: true,
+      rejectButtonProps: { label: 'Cancel', severity: 'secondary' },
+      acceptButtonProps: { label: 'Clear' },
+      accept: () => {
+        this.registerForm().reset(registerModel);
+      },
+    });
   }
 }
