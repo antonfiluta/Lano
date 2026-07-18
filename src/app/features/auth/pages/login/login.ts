@@ -6,12 +6,11 @@ import {
   email,
   minLength,
 } from '@angular/forms/signals';
-import { RouterLink } from '@angular/router';
 import { AuthStore } from '@core/stores/auth.store';
 import { LoginData } from '@features/auth/models/user.model';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmationService } from 'primeng/api';
-import { Logo } from '@shared/ui/logo/logo';
+import { AuthWrapper } from '@features/auth/ui/auth-wrapper/auth-wrapper';
 
 const loginModel = {
   email: '',
@@ -20,7 +19,7 @@ const loginModel = {
 
 @Component({
   selector: 'app-login',
-  imports: [RouterLink, FormField, Logo, ConfirmDialogModule],
+  imports: [FormField, ConfirmDialogModule, AuthWrapper],
   providers: [ConfirmationService],
   templateUrl: './login.html',
   styleUrl: './login.css',

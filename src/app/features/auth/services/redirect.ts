@@ -8,7 +8,6 @@ export class RedirectService {
   private router = inject(Router);
 
   public redirectUser(isForAuthenticated: boolean) {
-    console.log('redirect');
     if (isForAuthenticated) {
       const currentUrl = this.router.url;
       return this.router.navigate(['/auth'], {

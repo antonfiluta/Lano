@@ -2,12 +2,11 @@ import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { AuthStore } from '@core/stores/auth.store';
 import { ToastModule } from 'primeng/toast';
-import { Background } from '@shared/ui/background/background';
-import { Logo } from '@shared/ui/logo/logo';
+import { InitialPage } from '@shared/ui/initial-page/initial-page';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, ToastModule, Background, Logo],
+  imports: [RouterOutlet, ToastModule, InitialPage],
   templateUrl: './app.html',
   styleUrl: './app.css',
 })

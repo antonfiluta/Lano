@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AuthStore } from '@core/stores/auth.store';
+import { Logo } from '@shared/ui/logo/logo';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [Logo],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })

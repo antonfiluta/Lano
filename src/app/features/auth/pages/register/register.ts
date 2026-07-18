@@ -6,14 +6,13 @@ import {
   email,
   minLength,
 } from '@angular/forms/signals';
-import { RouterLink } from '@angular/router';
 import { AuthStore } from '@core/stores/auth.store';
 import { RegisterData } from '@features/auth/models/user.model';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ButtonModule } from 'primeng/button';
-import { Logo } from '@shared/ui/logo/logo';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { AuthWrapper } from '@features/auth/ui/auth-wrapper/auth-wrapper';
 
 const registerModel = {
   email: '',
@@ -24,12 +23,11 @@ const registerModel = {
 @Component({
   selector: 'app-register',
   imports: [
-    RouterLink,
     FormField,
     ConfirmPopupModule,
     ButtonModule,
-    Logo,
     ConfirmDialogModule,
+    AuthWrapper,
   ],
   providers: [ConfirmationService],
   templateUrl: './register.html',

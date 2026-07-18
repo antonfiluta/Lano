@@ -37,6 +37,7 @@ export const ThemeStore = signalStore(
   withComputed((store) => ({
     isDark: computed(() => {
       store.trigger();
+
       const mode = store.mode();
       if (mode === 'dark') return true;
       if (mode === 'light') return false;
@@ -86,9 +87,8 @@ export const ThemeStore = signalStore(
         }
 
         this._applyMode();
-        // нужно ли? если есть в _applyMode
-        // this._applyPrimary();
-        // this._applySurface();
+        this._applySurface();
+        this._applyPrimary();
       },
 
       _persist() {
@@ -103,9 +103,6 @@ export const ThemeStore = signalStore(
 
         const darkMode = store.isDark();
         document.documentElement.classList.toggle('dark', darkMode);
-
-        this._applyPrimary(); // нужно ли? + работает ли?
-        this._applySurface(); // нужно ли?
       },
 
       _applySurface() {

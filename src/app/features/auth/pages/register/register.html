@@ -1,160 +1,119 @@
-<div class="relative z-10 flex w-full items-center justify-center px-4 py-8">
-  <div
-    class="dark:bg-surface-900/60 dark:border-surface-700/50 border-surface-200/50 shadow-surface-300/20 dark:shadow-surface-950/60 w-[95vw] max-w-96 rounded-2xl border bg-white/70 p-8 shadow-2xl backdrop-blur-xl transition-all duration-300"
-  >
-    <div class="mb-5 flex flex-col items-center gap-3">
-      <app-logo></app-logo>
-      <span class="text-surface-500 dark:text-surface-400 text-sm font-medium">
-        Create your account
-      </span>
+<app-auth-wrapper [isLogin]="false">
+  <form (submit)="submit($event)" class="flex flex-col gap-5">
+    <div class="flex flex-col gap-1.5">
+      <label
+        for="register-email"
+        class="text-surface-700 dark:text-surface-300 text-sm font-medium"
+      >
+        Email
+      </label>
+
+      <div class="relative">
+        <i
+          class="pi pi-envelope text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
+        ></i>
+        <input
+          id="register-email"
+          type="email"
+          class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-4 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+          placeholder="you@example.com"
+          [formField]="registerForm.email"
+        />
+      </div>
+      @if (registerForm.email().dirty() && registerForm.email().invalid()) {
+        <p class="mt-1 text-xs text-red-500 dark:text-red-400">
+          {{ registerForm.email().errors()[0].message }}
+        </p>
+      }
     </div>
 
-    <form (submit)="submit($event)" class="flex flex-col gap-5">
-      <div class="flex flex-col gap-1.5">
-        <label
-          for="register-email"
-          class="text-surface-700 dark:text-surface-300 text-sm font-medium"
-        >
-          Email
-        </label>
-
-        <div class="relative">
-          <i
-            class="pi pi-envelope text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
-          ></i>
-          <input
-            id="register-email"
-            type="email"
-            class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-4 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
-            placeholder="you@example.com"
-            [formField]="registerForm.email"
-          />
-        </div>
-        @if (registerForm.email().touched() && registerForm.email().invalid()) {
-          <p class="mt-1 text-xs text-red-500 dark:text-red-400">
-            {{ registerForm.email().errors()[0].message }}
-          </p>
-        }
+    <div class="flex flex-col gap-1.5">
+      <label
+        for="register-name"
+        class="text-surface-700 dark:text-surface-300 text-sm font-medium"
+      >
+        Full Name
+      </label>
+      <div class="relative">
+        <i
+          class="pi pi-user text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
+        ></i>
+        <input
+          id="register-name"
+          type="text"
+          class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-4 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+          placeholder="Graph Dracula"
+          [formField]="registerForm.name"
+        />
       </div>
+      @if (registerForm.name().dirty() && registerForm.name().invalid()) {
+        <p class="mt-1 text-xs text-red-500 dark:text-red-400">
+          {{ registerForm.name().errors()[0].message }}
+        </p>
+      }
+    </div>
 
-      <div class="flex flex-col gap-1.5">
-        <label
-          for="register-name"
-          class="text-surface-700 dark:text-surface-300 text-sm font-medium"
-        >
-          Full Name
-        </label>
-        <div class="relative">
-          <i
-            class="pi pi-user text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
-          ></i>
-          <input
-            id="register-name"
-            type="text"
-            class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-4 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
-            placeholder="Graph Dracula"
-            [formField]="registerForm.name"
-          />
-        </div>
-        @if (registerForm.name().touched() && registerForm.name().invalid()) {
-          <p class="mt-1 text-xs text-red-500 dark:text-red-400">
-            {{ registerForm.name().errors()[0].message }}
-          </p>
-        }
-      </div>
-
-      <div class="flex flex-col gap-1.5">
-        <label
-          for="register-password"
-          class="text-surface-700 dark:text-surface-300 text-sm font-medium"
-        >
-          Password
-        </label>
-        <div class="relative">
-          <i
-            class="pi pi-lock text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
-          ></i>
-          <input
-            id="register-password"
-            [type]="showPassword() ? 'text' : 'password'"
-            class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-8 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
-            placeholder="••••••••"
-            [formField]="registerForm.password"
-          />
-          <button
-            type="button"
-            (click)="togglePasswordVisibility()"
-            class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300 absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
-            tabindex="-1"
-          >
-            <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
-          </button>
-        </div>
-        @if (
-          registerForm.password().dirty() && registerForm.password().invalid()
-        ) {
-          <p class="mt-1 text-xs text-red-500 dark:text-red-400">
-            {{ registerForm.password().errors()[0].message }}
-          </p>
-        }
-      </div>
-
-      <!-- Buttons row -->
-      <div class="mt-2 flex items-center gap-2">
-        <!-- Submit button -->
-        <button
-          type="submit"
-          [disabled]="!registerForm().valid() || store.isLoading()"
-          class="bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-primary-500/30 dark:shadow-primary-600/30 flex flex-1 justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
-        >
-          @if (store.isLoading()) {
-            <i class="pi pi-spinner pi-spin text-base"></i>
-            <span>Creating account…</span>
-          } @else {
-            <i class="pi pi-user-plus text-base"></i>
-            <span>Create Account</span>
-          }
-        </button>
-
+    <div class="flex flex-col gap-1.5">
+      <label
+        for="register-password"
+        class="text-surface-700 dark:text-surface-300 text-sm font-medium"
+      >
+        Password
+      </label>
+      <div class="relative">
+        <i
+          class="pi pi-lock text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
+        ></i>
+        <input
+          id="register-password"
+          [type]="showPassword() ? 'text' : 'password'"
+          class="dark:bg-surface-800/50 dark:border-surface-700 border-surface-200 text-surface-800 placeholder:text-surface-400 focus:border-primary-400 focus:ring-primary-400/20 dark:text-surface-100 dark:placeholder:text-surface-500 dark:focus:border-primary-500 dark:focus:ring-primary-500/20 w-full rounded-xl border bg-white/80 py-2.5 pr-8 pl-10 text-sm transition-all duration-200 outline-none focus:ring-2 disabled:cursor-not-allowed disabled:opacity-60"
+          placeholder="••••••••"
+          [formField]="registerForm.password"
+        />
         <button
           type="button"
-          class="bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-surface-600 dark:text-surface-300 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200"
-          [disabled]="store.isLoading()"
-          (click)="clearForm($event)"
+          (click)="togglePasswordVisibility()"
+          class="text-surface-400 hover:text-surface-600 dark:text-surface-500 dark:hover:text-surface-300 absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
+          tabindex="-1"
         >
-          <i class="pi pi-eraser text-base"></i>
+          <i [class]="showPassword() ? 'pi pi-eye-slash' : 'pi pi-eye'"></i>
         </button>
       </div>
-    </form>
+      @if (
+        registerForm.password().dirty() && registerForm.password().invalid()
+      ) {
+        <p class="mt-1 text-xs text-red-500 dark:text-red-400">
+          {{ registerForm.password().errors()[0].message }}
+        </p>
+      }
+    </div>
 
-    <div class="relative my-6 flex items-center">
-      <div
-        class="border-surface-200 dark:border-surface-700 flex-1 border-t"
-      ></div>
-      <span class="text-surface-400 dark:text-surface-500 px-4 text-xs"
-        >or</span
+    <div class="mt-2 flex items-center gap-2">
+      <button
+        type="submit"
+        [disabled]="!registerForm().valid() || store.isLoading()"
+        class="bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-primary-500/30 dark:shadow-primary-600/30 flex flex-1 justify-center gap-2 rounded-xl px-6 py-3 text-sm font-semibold text-white shadow-lg transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none"
       >
-      <div
-        class="border-surface-200 dark:border-surface-700 flex-1 border-t"
-      ></div>
-    </div>
+        @if (store.isLoading()) {
+          <i class="pi pi-spinner pi-spin text-base"></i>
+          <span>Creating account…</span>
+        } @else {
+          <i class="pi pi-user-plus text-base"></i>
+          <span>Create Account</span>
+        }
+      </button>
 
-    <div class="text-surface-500 dark:text-surface-400 text-center text-sm">
-      Already have an account?
-      <a
-        routerLink="/auth/login"
-        class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors"
+      <button
+        type="button"
+        class="bg-surface-200 hover:bg-surface-300 dark:bg-surface-700 dark:hover:bg-surface-600 text-surface-600 dark:text-surface-300 rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 disabled:cursor-not-allowed disabled:opacity-60"
+        [disabled]="store.isLoading() || !registerForm().dirty()"
+        (click)="clearForm($event)"
       >
-        Sign in
-      </a>
+        <i class="pi pi-eraser text-base"></i>
+      </button>
     </div>
-
-    <div
-      class="text-surface-400 dark:text-surface-500 mt-4 text-center text-xs"
-    >
-      Secure &bull; Free &bull; Premium productivity
-    </div>
-  </div>
-</div>
+  </form>
+</app-auth-wrapper>
 
 <p-confirmdialog />

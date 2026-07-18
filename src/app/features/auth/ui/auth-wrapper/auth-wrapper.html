@@ -1,0 +1,45 @@
+<div class="relative z-10 flex w-full items-center justify-center px-4 py-8">
+  <div
+    class="dark:bg-surface-900/60 dark:border-surface-700/50 border-surface-200/50 shadow-surface-300/20 dark:shadow-surface-950/60 w-[95vw] max-w-96 rounded-2xl border bg-white/70 p-8 shadow-2xl backdrop-blur-xl transition-all duration-300"
+  >
+    <div class="mb-5 flex flex-col items-center gap-3">
+      <app-logo></app-logo>
+      <span class="text-surface-500 dark:text-surface-400 text-sm font-medium">
+        {{ authContent().header }}
+      </span>
+    </div>
+
+    <!-- Auth Form here -->
+    <ng-content></ng-content>
+
+    <div class="relative my-6 flex items-center">
+      <div
+        class="border-surface-200 dark:border-surface-700 flex-1 border-t"
+      ></div>
+      <span class="text-surface-400 dark:text-surface-500 px-4 text-xs">
+        or
+      </span>
+      <div
+        class="border-surface-200 dark:border-surface-700 flex-1 border-t"
+      ></div>
+    </div>
+
+    <div
+      class="text-surface-500 dark:text-surface-400 cursor-pointer text-center text-sm"
+    >
+      {{ authContent().footer }}
+      <button
+        (click)="safeNavigate()"
+        class="text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium transition-colors"
+      >
+        {{ authContent().link }}
+      </button>
+    </div>
+
+    <div
+      class="text-surface-400 dark:text-surface-500 mt-4 text-center text-xs"
+    >
+      Secure &bull; Free &bull; Premium productivity
+    </div>
+  </div>
+</div>

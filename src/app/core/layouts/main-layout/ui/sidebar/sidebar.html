@@ -1,21 +1,12 @@
 <aside
   class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 shadow-surface-200/50 flex h-full w-64 flex-col border-r shadow-xl dark:shadow-black/20"
 >
-  <!-- Логотип (если нужно отдельно от header) -->
   <div
     class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b px-6 py-5"
   >
-    <div
-      class="bg-primary-500 shadow-primary-500/20 flex h-8 w-8 items-center justify-center rounded-lg shadow-sm"
-    >
-      <i class="pi pi-check text-sm text-white"></i>
-    </div>
-    <span class="text-surface-800 dark:text-surface-200 text-lg font-bold"
-      >LANO</span
-    >
+    <app-logo [size]="'small'"></app-logo>
   </div>
 
-  <!-- Навигация (заглушки, позже добавишь роутер-линки) -->
   <nav class="flex-1 space-y-1 px-3 py-4">
     <a
       class="text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
@@ -29,10 +20,8 @@
       <i class="pi pi-list"></i>
       My Tasks
     </a>
-    <!-- Здесь потом добавится список досок -->
   </nav>
 
-  <!-- Кнопка выхода -->
   <div class="border-surface-200 dark:border-surface-700 border-t p-3">
     <button
       (click)="logout()"
