@@ -92,7 +92,7 @@ export const AuthStore = signalStore(
           });
 
           if (eventType !== 'INITIAL_SESSION')
-            redirectService.redirectUser(false);
+            redirectService.redirectUser(true);
         } else {
           // 2. Сессия есть — пытаемся загрузить профиль
           try {
@@ -112,7 +112,7 @@ export const AuthStore = signalStore(
             });
 
             if (eventType !== 'INITIAL_SESSION')
-              redirectService.redirectUser(true);
+              redirectService.redirectUser(false);
           } catch (error) {
             // 3. Выходим если не найден профиль для текущей сессии
             errorHandler.handle(error, 'AuthStore.onAuthStateChange');
