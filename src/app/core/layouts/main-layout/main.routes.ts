@@ -3,7 +3,7 @@ import { Routes } from '@angular/router';
 export const MAIN_ROUTES: Routes = [
   {
     path: 'dashboard',
-    title: 'Lano Dashboard',
+    title: 'Dashboard',
     loadComponent: () =>
       import('@features/dashboard/pages/dashboard/dashboard').then(
         (m) => m.Dashboard,
@@ -11,9 +11,25 @@ export const MAIN_ROUTES: Routes = [
   },
   {
     path: 'board',
-    title: 'Lano Board',
+    title: 'Board',
     loadChildren: () =>
       import('@features/board/board.routes').then((m) => m.BOARD_ROUTES),
+  },
+  {
+    path: 'habits',
+    title: 'Habits Log',
+    loadComponent: () =>
+      import('@features/habits/pages/habits-log/habits-log').then(
+        (m) => m.HabitsLog,
+      ),
+  },
+  {
+    path: 'sleep',
+    title: 'Sleep Log',
+    loadComponent: () =>
+      import('@features/sleep/pages/sleep-log/sleep-log').then(
+        (m) => m.SleepLog,
+      ),
   },
   {
     path: 'settings',

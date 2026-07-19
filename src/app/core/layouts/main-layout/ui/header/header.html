@@ -1,26 +1,13 @@
 <header
   class="bg-surface-0/70 dark:bg-surface-800/70 border-surface-200 dark:border-surface-700 flex items-center justify-between border-b px-6 py-4 shadow-sm backdrop-blur-lg"
 >
-  <!-- Логотип / Название -->
-  <div class="flex items-center gap-3">
-    <div
-      class="bg-primary-500 shadow-primary-500/20 flex h-10 w-10 items-center justify-center rounded-lg shadow-md"
-    >
-      <i class="pi pi-check text-xl text-white"></i>
-    </div>
-    <span
-      class="from-primary-500 to-primary-400 bg-linear-to-r bg-clip-text text-2xl font-black tracking-wider text-transparent"
-    >
-      LANO
-    </span>
+  <div>
+    <svg lucidePanelLeftClose></svg>
   </div>
-
-  <!-- Правая часть: переключатели темы + профиль -->
   <div class="flex items-center gap-5">
     <app-theme-switcher></app-theme-switcher>
     <app-color-switcher></app-color-switcher>
 
-    <!-- Профиль -->
     <div class="flex items-center gap-3">
       <div class="flex flex-col items-end">
         <span

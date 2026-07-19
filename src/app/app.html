@@ -1,6 +1,7 @@
 <p-toast key="global" stackVisibleLimit="7" />
 
-@if (authStore.initialized() && canActivate()) {
+@if (authStore.initialized()) {
+  <!-- @if (authStore.initialized() && canActivate()) { -->
   <!-- @if (false) { -->
   <router-outlet></router-outlet>
 } @else {
