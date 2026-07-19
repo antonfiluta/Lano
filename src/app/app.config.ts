@@ -7,9 +7,10 @@ import {
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
-import { AuthStore } from '@features/auth/data-access/auth.store/auth.store';
+import { AuthStore } from '@core/stores/auth.store';
 import Aura from '@primeuix/themes/aura';
-import { themeStore } from '@features/theme/data-access/theme.store';
+import { ThemeStore } from '@core/stores/theme.store';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -23,9 +24,10 @@ export const appConfig: ApplicationConfig = {
         },
       },
     }),
+    MessageService,
     provideAppInitializer(() => {
-      inject(AuthStore).initialize();
-      inject(themeStore);
+      inject(ThemeStore);
+      inject(AuthStore);
     }),
   ],
 };

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Database } from '@core/types/database.types';
+import { Database } from '@shared/types/database.types';
 import { environment } from '@env/environment';
 import { createClient } from '@supabase/supabase-js';
 

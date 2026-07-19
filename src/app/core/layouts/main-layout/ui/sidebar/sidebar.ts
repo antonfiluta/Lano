@@ -1,20 +1,52 @@
 import { Component, inject } from '@angular/core';
-import { Router } from '@angular/router';
-import { AuthStore } from '@features/auth/data-access/auth.store/auth.store';
+import { RouterLink } from '@angular/router';
+import { AuthStore } from '@core/stores/auth.store';
+import { Logo } from '@shared/ui/logo/logo';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [],
+  imports: [Logo, RouterLink],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
-  public authStore = inject(AuthStore);
-  public router = inject(Router);
+  private authStore = inject(AuthStore);
 
-  public async logout() {
-    if (await this.authStore.logout()) {
-      this.router.navigateByUrl('/auth');
-    }
+  protected boards = [
+    {
+      title: '',
+    },
+  ];
+
+  protected async logout() {
+    await this.authStore.logout();
   }
+
+  protected routes = [
+    {
+      path: '/dashboard',
+      title: 'Dashboard',
+      icon: 'th-large',
+    },
+    {
+      path: '/boards/',
+      title: 'Boards',
+      icon: 'list',
+    },
+    {
+      path: '/habits',
+      title: 'Habit Log',
+      icon: 'book',
+    },
+    {
+      path: '/sleep',
+      title: 'Sleep Log',
+      icon: 'calendar',
+    },
+    {
+      path: '/settings',
+      title: 'Settings',
+      icon: 'cog',
+    },
+  ];
 }

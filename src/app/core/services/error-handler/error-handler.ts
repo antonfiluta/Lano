@@ -1,24 +1,50 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { NotificationsService } from '../notifications/notifications.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ErrorHandler {
-  public handle(error: unknown, context?: string) {
-    const message = this.extractMessage(error);
+  private notify = inject(NotificationsService);
 
-    console.error(`[${context ?? 'Aplication Error'}]`, message, error);
+  public handle(error: unknown, context?: string): void {
+    const detail = this.getFriendlyMessage(error);
+    this.notify.error({ detail }, context);
   }
 
   public extractMessage(error: unknown): string {
     if (error instanceof Error) {
       return error.message;
     }
-
     if (typeof error === 'string') {
       return error;
     }
+    return 'Unknown Error';
+  }
 
-    return 'Uknown Error';
+  private getFriendlyMessage(error: unknown): string {
+    if (error instanceof TypeError && error.message.includes('fetch')) {
+      return 'Network error. Please check your internet connection.';
+    }
+
+    if (error instanceof Error) {
+      if (
+        error.message.includes('NetworkError') ||
+        error.message.includes('Failed to fetch')
+      ) {
+        return 'Server is temporarily unavailable. Please try again later.';
+      }
+
+      if (
+        error.message.includes('timeout') ||
+        error.message.includes('Timeout')
+      ) {
+        return 'Request timed out. Please try again.';
+      }
+
+      return error.message;
+    }
+
+    return 'An unknown error occurred.';
   }
 }

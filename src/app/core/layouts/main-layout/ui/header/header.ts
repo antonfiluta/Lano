@@ -1,14 +1,15 @@
 import { Component, inject } from '@angular/core';
-import { ThemeSwitcher } from '@features/theme/feature/theme-switcher/theme-switcher';
-import { ColorSwitcher } from '@features/theme/feature/color-switcher/color-switcher';
-import { AuthStore } from '@features/auth/data-access/auth.store/auth.store';
+import { ThemeSwitcher } from '@features/theme/ui/theme-switcher/theme-switcher';
+import { ColorSwitcher } from '@features/theme/ui/color-switcher/color-switcher';
+import { AuthStore } from '@core/stores/auth.store';
+import { LucidePanelLeftClose } from '@lucide/angular';
 
 @Component({
   selector: 'app-header',
-  imports: [ThemeSwitcher, ColorSwitcher],
+  imports: [ThemeSwitcher, ColorSwitcher, LucidePanelLeftClose],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
-  public store = inject(AuthStore);
+  protected readonly store = inject(AuthStore);
 }
