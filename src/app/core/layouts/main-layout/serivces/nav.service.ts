@@ -29,9 +29,11 @@ export class NavSerice {
   );
 
   private activeIndex = computed(() => {
-    return this.routes.findIndex((route) =>
-      this.currentUrl().includes(route.path),
-    );
+    const url = this.currentUrl();
+
+    if (url === '/') return 0;
+
+    return this.routes.findIndex((route) => url.includes(route.path));
   });
 
   constructor() {

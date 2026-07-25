@@ -5,7 +5,7 @@ export const NAV_ROUTES = [
     icon: 'th-large',
   },
   {
-    path: '/board/2/kanban',
+    path: '/boards',
     title: 'Tasks Log',
     icon: 'bullseye',
   },

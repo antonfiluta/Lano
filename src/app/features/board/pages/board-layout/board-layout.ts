@@ -2,11 +2,11 @@ import { Component, input } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-board-page',
+  selector: 'app-board-layout',
   imports: [RouterOutlet],
-  templateUrl: './board-page.html',
-  styleUrl: './board-page.css',
+  templateUrl: './board-layout.html',
+  styleUrl: './board-layout.css',
 })
-export class BoardPage {
+export class BoardLayout {
   public id = input.required<string>();
 }
