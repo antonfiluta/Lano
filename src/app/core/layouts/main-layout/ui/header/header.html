@@ -1,12 +1,28 @@
-<header
-  class="bg-surface-0/70 dark:bg-surface-800/70 border-surface-200 dark:border-surface-700 flex items-center justify-between border-b px-6 py-4 shadow-sm backdrop-blur-lg"
->
-  <div>
-    <svg lucidePanelLeftClose></svg>
-  </div>
-  <div class="flex items-center gap-5">
-    <app-theme-switcher></app-theme-switcher>
-    <app-color-switcher></app-color-switcher>
+<header class="block-bg flex items-center justify-between px-6 py-4">
+  <button
+    pButton
+    iconOnly
+    variant="text"
+    severity="secondary"
+    size="small"
+    (click)="sidebar.toggle()"
+    class="border-none! bg-transparent! px-1.5! py-1! hover:bg-black/5! dark:hover:bg-white/5!"
+  >
+    <svg [lucideIcon]="icon()" [size]="21" strokeWidth="1.5"></svg>
+  </button>
+
+  <div class="flex items-center gap-3">
+    <button
+      pButton
+      iconOnly
+      variant="text"
+      severity="secondary"
+      size="small"
+      rounded
+      class="size-9! border-none! bg-transparent! p-0! hover:bg-black/5! dark:hover:bg-white/5!"
+    >
+      <i class="pi pi-bell text-lg!"></i>
+    </button>
 
     <div class="flex items-center gap-3">
       <div class="flex flex-col items-end">
@@ -19,7 +35,6 @@
           {{ store.user()?.email }}
         </span>
       </div>
-      <!-- Аватар (пока заглушка, позже можно загружать из профиля) -->
       <div
         class="bg-primary-100 dark:bg-primary-800 text-primary-600 dark:text-primary-200 flex h-9 w-9 items-center justify-center rounded-full text-sm font-bold"
       >

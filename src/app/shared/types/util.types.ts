@@ -1,1 +1,1 @@
-export type LogoSizes = 'small' | 'medium' | 'large';
+export type LogoSizes = 'xs' | 'sm' | 'md' | 'lg';

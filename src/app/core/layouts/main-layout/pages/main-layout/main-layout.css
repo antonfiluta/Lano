@@ -1,0 +1,4 @@
+:host {
+  @reference "tailwindcss";
+  @apply flex h-screen w-screen overflow-hidden bg-linear-to-br;
+}

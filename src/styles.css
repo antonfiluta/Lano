@@ -41,3 +41,24 @@ body {
 a {
   text-decoration: none;
 }
+
+.block-bg {
+  @reference "tailwindcss";
+  @apply bg-surface-0/60 dark:bg-surface-900/65 border-surface-200 dark:border-surface-800 rounded-xl border-[0.5px] shadow-md backdrop-blur-sm;
+}
+
+.active-link-bg {
+  @reference "tailwindcss";
+  @apply from-primary-500/10! border-primary-500/20 shadow-primary-500/10! bg-primary-500/10 absolute w-full rounded-lg border-[0.5px]! bg-linear-to-r! to-transparent! shadow-sm! transition-all;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    background-color: var(--p-primary-500);
+    border-radius: 4px;
+  }
+}

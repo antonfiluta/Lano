@@ -1,15 +1,21 @@
-import { Component, inject } from '@angular/core';
-import { ThemeSwitcher } from '@features/theme/ui/theme-switcher/theme-switcher';
-import { ColorSwitcher } from '@features/theme/ui/color-switcher/color-switcher';
+import { Component, computed, inject } from '@angular/core';
 import { AuthStore } from '@core/stores/auth.store';
-import { LucidePanelLeftClose } from '@lucide/angular';
+import { LucideDynamicIcon } from '@lucide/angular';
+import { LucidePanelLeftClose, LucidePanelLeftOpen } from '@lucide/angular';
+import { SidebarService } from '@core/layouts/main-layout/serivces/sidebar.service';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-header',
-  imports: [ThemeSwitcher, ColorSwitcher, LucidePanelLeftClose],
+  imports: [LucideDynamicIcon, ButtonModule],
   templateUrl: './header.html',
   styleUrl: './header.css',
 })
 export class Header {
-  protected readonly store = inject(AuthStore);
+  protected store = inject(AuthStore);
+  protected sidebar = inject(SidebarService);
+
+  protected icon = computed(() =>
+    this.sidebar.isOpen() ? LucidePanelLeftClose : LucidePanelLeftOpen,
+  );
 }

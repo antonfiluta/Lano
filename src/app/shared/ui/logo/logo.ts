@@ -8,21 +8,26 @@ import { LogoSizes } from '@shared/types/util.types';
   styleUrl: './logo.css',
 })
 export class Logo {
-  public size = input<LogoSizes>('medium');
+  public size = input<LogoSizes>('md');
+  public onlyIcon = input<boolean>(false);
 
   public styles = computed(() => {
     let iconSize, fontSize;
 
     switch (this.size()) {
-      case 'small':
+      case 'xs':
+        iconSize = 'size-8 rounded-md';
+        fontSize = 'text-xl';
+        break;
+      case 'sm':
         iconSize = 'size-10 rounded-lg';
         fontSize = 'text-2xl';
         break;
-      case 'medium':
+      case 'md':
         iconSize = 'size-12 rounded-xl';
         fontSize = 'text-4xl';
         break;
-      case 'large':
+      case 'lg':
         iconSize = 'size-14 rounded-xl';
         fontSize = 'text-5xl';
     }

@@ -1,31 +1,69 @@
 <aside
-  class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 shadow-surface-200/50 flex h-full w-64 flex-col border-r shadow-xl dark:shadow-black/20"
+  class="block-bg flex h-full flex-col p-4 transition-all duration-150"
+  [class]="isOpen() ? 'w-64' : 'w-16'"
 >
   <div
-    class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b px-6 py-5"
+    class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b pb-3"
   >
-    <app-logo [size]="'small'"></app-logo>
+    <app-logo [size]="isOpen() ? 'sm' : 'xs'" [onlyIcon]="!isOpen()"></app-logo>
+
+    @if (isMobile()) {
+      <button
+        pButton
+        iconOnly
+        variant="text"
+        severity="secondary"
+        size="small"
+        (click)="toggle()"
+        class="border-none! bg-transparent! px-1.5! py-1! hover:bg-black/5! dark:hover:bg-white/5!"
+      >
+        <svg [lucideIcon]="icon()" [size]="21" strokeWidth="1.5"></svg>
+      </button>
+    }
   </div>
 
-  <nav class="flex-1 space-y-1 px-3 py-4">
-    @for (route of routes; track route.title) {
+  <nav class="relative flex flex-1 flex-col gap-1 py-4">
+    <div
+      class="active-link-bg"
+      [class]="
+        (isOpen() ? 'h-10' : 'mt-[3px] h-[30px]') +
+        (isBgAnimated() ? ' duration-200' : ' duration-[0s]')
+      "
+      [style.transform]="bgPosition()"
+    ></div>
+
+    @for (route of routes; track route.title; let i = $index) {
       <a
-        class="text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
         [routerLink]="route.path"
+        routerLinkActive="!text-primary-600 dark:!text-primary-400 hover:!bg-white/0 dark:!hover:bg-white/0"
+        class="text-surface-600 dark:text-surface-300 hover:bg-surface-100/80 dark:hover:bg-surface-800/80 relative z-10 flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-transform duration-200"
+        [class]="isOpen() ? 'px-3' : 'pl-[7px]'"
       >
-        <i [class]="'pi pi-' + route.icon"></i>
-        {{ route.title }}
+        <i [class]="'pi pi-' + route.icon + ' text-base'"></i>
+
+        <span
+          class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
+          [class]="isOpen() ? 'max-w-40 opacity-100' : 'max-w-0 opacity-0'"
+        >
+          {{ route.title }}
+        </span>
       </a>
     }
   </nav>
 
-  <div class="border-surface-200 dark:border-surface-700 border-t p-3">
+  <div class="border-surface-200 dark:border-surface-700 border-t">
     <button
       (click)="logout()"
-      class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+      class="hover:bg-surface-100/50 dark:hover:bg-surface-800/80 mt-2 flex w-full items-center gap-3 rounded-lg py-2 text-sm font-medium text-red-600 transition-all duration-200 dark:text-red-400"
+      [class]="isOpen() ? 'px-3' : 'pl-[7.5px]'"
     >
       <i class="pi pi-sign-out"></i>
-      Sign Out
+      <span
+        class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
+        [class]="isOpen() ? 'max-w-40 opacity-100' : 'max-w-0 opacity-0'"
+      >
+        Sign Out
+      </span>
     </button>
   </div>
 </aside>

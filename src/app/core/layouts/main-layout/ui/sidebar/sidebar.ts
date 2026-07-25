@@ -1,52 +1,42 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, computed, inject } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthStore } from '@core/stores/auth.store';
 import { Logo } from '@shared/ui/logo/logo';
+import { LucideDynamicIcon } from '@lucide/angular';
+import { LucidePanelLeftClose, LucidePanelLeftOpen } from '@lucide/angular';
+import { SidebarService } from '@core/layouts/main-layout/serivces/sidebar.service';
+import { CommonModule } from '@angular/common';
+import { NavSerice } from '../../serivces/nav.service';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [Logo, RouterLink],
+  imports: [
+    Logo,
+    RouterLink,
+    RouterLinkActive,
+    LucideDynamicIcon,
+    CommonModule,
+  ],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
   private authStore = inject(AuthStore);
+  private sidebar = inject(SidebarService);
+  private nav = inject(NavSerice);
 
-  protected boards = [
-    {
-      title: '',
-    },
-  ];
+  protected isOpen = this.sidebar.isOpen;
+  protected isMobile = this.sidebar.isMobile;
 
-  protected async logout() {
-    await this.authStore.logout();
-  }
+  protected routes = this.nav.routes;
+  protected boards = this.nav.boards;
+  protected bgPosition = this.nav.bgPosition;
+  protected isBgAnimated = this.nav.isBgAnimated;
 
-  protected routes = [
-    {
-      path: '/dashboard',
-      title: 'Dashboard',
-      icon: 'th-large',
-    },
-    {
-      path: '/boards/',
-      title: 'Boards',
-      icon: 'list',
-    },
-    {
-      path: '/habits',
-      title: 'Habit Log',
-      icon: 'book',
-    },
-    {
-      path: '/sleep',
-      title: 'Sleep Log',
-      icon: 'calendar',
-    },
-    {
-      path: '/settings',
-      title: 'Settings',
-      icon: 'cog',
-    },
-  ];
+  protected icon = computed(() =>
+    this.isOpen() ? LucidePanelLeftClose : LucidePanelLeftOpen,
+  );
+
+  protected toggle = () => this.sidebar.toggle();
+  protected logout = () => this.authStore.logout();
 }

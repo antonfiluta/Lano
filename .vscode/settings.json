@@ -35,5 +35,9 @@
   },
 
   "files.trimTrailingWhitespace": true,
-  "files.insertFinalNewline": true
+  "files.insertFinalNewline": true,
+
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false
 }

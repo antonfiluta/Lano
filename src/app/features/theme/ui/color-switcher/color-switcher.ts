@@ -18,11 +18,11 @@ import { ColorButton } from '@shared/ui/color-button/color-button';
   styleUrl: './color-switcher.css',
 })
 export class ColorSwitcher {
-  public readonly store = inject(ThemeStore);
+  protected store = inject(ThemeStore);
 
-  public readonly primaryColors = PRIMARY_COLORS;
-  public readonly surfaceColors = SURFACE_COLORS;
-  public readonly surfacePalettes = SURFACE_PALETTES;
+  protected primaryColors = PRIMARY_COLORS;
+  protected surfaceColors = SURFACE_COLORS;
+  protected surfacePalettes = SURFACE_PALETTES;
 
   public setPrimary(color: PrimaryColor) {
     this.store.setPrimary(color);

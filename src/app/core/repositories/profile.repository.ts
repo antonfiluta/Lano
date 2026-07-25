@@ -5,9 +5,9 @@ import { SupabaseService } from '@core/services/supabase/supabase.service';
   providedIn: 'root',
 })
 export class ProfileRepository {
-  private readonly supabase = inject(SupabaseService).client;
+  private supabase = inject(SupabaseService).client;
 
-  public async getProfile(userId: string) {
+  public getProfile(userId: string) {
     return this.supabase.from('profiles').select('*').eq('id', userId).single();
   }
 }

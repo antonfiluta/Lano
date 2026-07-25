@@ -120,7 +120,6 @@ export const AuthStore = signalStore(
           }
         }
 
-        console.log('before');
         if (eventType === 'INITIAL_SESSION') {
           patchState(store, {
             initialized: true,

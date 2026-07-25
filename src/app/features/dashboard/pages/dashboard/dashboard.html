@@ -1,1 +1,365 @@
-<p>dashboard works!</p>
+<div class="space-y-6">
+  <!-- Заголовок -->
+  <div class="flex items-center justify-between">
+    <h1 class="text-surface-800 dark:text-surface-100 text-2xl font-bold">
+      Dashboard
+    </h1>
+    <span class="text-surface-500 dark:text-surface-400 text-sm">
+      {{ date | date: 'EEEE, MMMM d' }}
+    </span>
+  </div>
+
+  <!-- Быстрые действия (сверху) -->
+  <div class="flex flex-wrap gap-3">
+    @for (action of quickActions; track action.label) {
+      <a
+        [routerLink]="action.link"
+        class="bg-primary-500/10 text-primary-600 hover:bg-primary-500/20 dark:bg-primary-400/10 dark:text-primary-400 dark:hover:bg-primary-400/20 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium transition-colors"
+      >
+        <i [class]="'pi ' + action.icon"></i>
+        {{ action.label }}
+      </a>
+    }
+  </div>
+
+  <!-- Сетка статистики -->
+  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
+    <div
+      class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-surface-500 dark:text-surface-400 text-sm"
+          >Total Tasks</span
+        >
+        <i class="pi pi-tasks text-primary-500"></i>
+      </div>
+      <p class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold">
+        {{ stats.totalTasks }}
+      </p>
+    </div>
+
+    <div
+      class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-surface-500 dark:text-surface-400 text-sm"
+          >Completed</span
+        >
+        <i class="pi pi-check-circle text-emerald-500"></i>
+      </div>
+      <p class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold">
+        {{ stats.completedTasks }}
+      </p>
+    </div>
+
+    <div
+      class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-surface-500 dark:text-surface-400 text-sm"
+          >Active Habits</span
+        >
+        <i class="pi pi-heart text-rose-500"></i>
+      </div>
+      <p class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold">
+        {{ stats.activeHabits }}
+      </p>
+    </div>
+
+    <div
+      class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-surface-500 dark:text-surface-400 text-sm"
+          >Avg Sleep</span
+        >
+        <i class="pi pi-moon text-indigo-500"></i>
+      </div>
+      <p class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold">
+        {{ stats.avgSleep }}h
+      </p>
+    </div>
+
+    <div
+      class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+    >
+      <div class="flex items-center justify-between">
+        <span class="text-surface-500 dark:text-surface-400 text-sm"
+          >Productivity</span
+        >
+        <i class="pi pi-chart-line text-amber-500"></i>
+      </div>
+      <p class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold">
+        {{ stats.productivity }}%
+      </p>
+    </div>
+  </div>
+
+  <!-- Карточки досок -->
+  <div>
+    <h2
+      class="text-surface-700 dark:text-surface-300 mb-3 text-lg font-semibold"
+    >
+      Your Boards
+    </h2>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      @for (board of boards; track board.name) {
+        <div
+          class="group border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 relative overflow-hidden rounded-xl border bg-white/70 p-5 shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
+        >
+          <div
+            class="absolute inset-0 bg-linear-to-br opacity-10 transition-opacity group-hover:opacity-20"
+            [class]="board.color"
+          ></div>
+          <div class="relative flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="bg-primary-500/10 text-primary-600 dark:bg-primary-400/10 dark:text-primary-400 flex h-10 w-10 items-center justify-center rounded-lg"
+              >
+                <i [class]="'pi ' + board.icon"></i>
+              </div>
+              <div>
+                <h3 class="text-surface-800 dark:text-surface-100 font-medium">
+                  {{ board.name }}
+                </h3>
+                <p class="text-surface-500 dark:text-surface-400 text-sm">
+                  {{ board.tasks }} tasks
+                </p>
+              </div>
+            </div>
+            <i
+              class="pi pi-chevron-right text-surface-400 dark:text-surface-500 transition-transform group-hover:translate-x-1"
+            ></i>
+          </div>
+        </div>
+      }
+      <!-- Кнопка создания новой доски -->
+      <div
+        class="border-surface-300/50 hover:border-primary-400/50 hover:bg-primary-500/5 dark:border-surface-600/50 dark:bg-surface-900/40 dark:hover:border-primary-400/40 flex cursor-pointer items-center justify-center rounded-xl border-2 border-dashed bg-white/40 p-5 backdrop-blur-sm transition-all"
+      >
+        <div
+          class="text-surface-400 dark:text-surface-500 flex flex-col items-center gap-1"
+        >
+          <i class="pi pi-plus text-2xl"></i>
+          <span class="text-sm font-medium">Create Board</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Нижний блок: быстрый доступ к недавним задачам (заглушка) -->
+  <div
+    class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-surface-700 dark:text-surface-300 font-medium">
+        Recent Activity
+      </h3>
+      <span class="text-surface-400 dark:text-surface-500 text-xs"
+        >Last 7 days</span
+      >
+    </div>
+    <div class="mt-3 space-y-2">
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Completed "Design System"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >2h ago</span
+        >
+      </div>
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Logged sleep 8h</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >5h ago</span
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Created new habit "Read"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >Yesterday</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-surface-700 dark:text-surface-300 font-medium">
+        Recent Activity
+      </h3>
+      <span class="text-surface-400 dark:text-surface-500 text-xs"
+        >Last 7 days</span
+      >
+    </div>
+    <div class="mt-3 space-y-2">
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Completed "Design System"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >2h ago</span
+        >
+      </div>
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Logged sleep 8h</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >5h ago</span
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Created new habit "Read"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >Yesterday</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-surface-700 dark:text-surface-300 font-medium">
+        Recent Activity
+      </h3>
+      <span class="text-surface-400 dark:text-surface-500 text-xs"
+        >Last 7 days</span
+      >
+    </div>
+    <div class="mt-3 space-y-2">
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Completed "Design System"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >2h ago</span
+        >
+      </div>
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Logged sleep 8h</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >5h ago</span
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Created new habit "Read"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >Yesterday</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-surface-700 dark:text-surface-300 font-medium">
+        Recent Activity
+      </h3>
+      <span class="text-surface-400 dark:text-surface-500 text-xs"
+        >Last 7 days</span
+      >
+    </div>
+    <div class="mt-3 space-y-2">
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Completed "Design System"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >2h ago</span
+        >
+      </div>
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Logged sleep 8h</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >5h ago</span
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Created new habit "Read"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >Yesterday</span
+        >
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm"
+  >
+    <div class="flex items-center justify-between">
+      <h3 class="text-surface-700 dark:text-surface-300 font-medium">
+        Recent Activity
+      </h3>
+      <span class="text-surface-400 dark:text-surface-500 text-xs"
+        >Last 7 days</span
+      >
+    </div>
+    <div class="mt-3 space-y-2">
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Completed "Design System"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >2h ago</span
+        >
+      </div>
+      <div
+        class="border-surface-200/50 dark:border-surface-700/50 flex items-center justify-between border-b pb-2"
+      >
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Logged sleep 8h</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >5h ago</span
+        >
+      </div>
+      <div class="flex items-center justify-between">
+        <span class="text-surface-600 dark:text-surface-400 text-sm"
+          >Created new habit "Read"</span
+        >
+        <span class="text-surface-400 dark:text-surface-500 text-xs"
+          >Yesterday</span
+        >
+      </div>
+    </div>
+  </div>
+</div>
