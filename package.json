@@ -12,7 +12,7 @@
     "format": "prettier . --write",
     "format:check": "prettier . --check",
     "prepare": "husky install",
-    "gen-types": "supabase gen types typescript --project-id srqiqjxsehhdthcvyylk --schema public > src/app/core/types/database.types.ts"
+    "gen-types": "supabase gen types typescript --project-id srqiqjxsehhdthcvyylk --schema public > src/app/shared/types/database.types.ts"
   },
   "private": true,
   "packageManager": "npm@11.12.1",

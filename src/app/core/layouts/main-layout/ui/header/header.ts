@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { AuthStore } from '@core/stores/auth.store';
 import { LucideDynamicIcon } from '@lucide/angular';
 import { LucidePanelLeftClose, LucidePanelLeftOpen } from '@lucide/angular';
-import { SidebarService } from '@core/layouts/main-layout/serivces/sidebar.service';
+import { SidebarService } from '@core/layouts/main-layout/services/sidebar.service';
 import { ButtonModule } from 'primeng/button';
 
 @Component({

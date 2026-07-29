@@ -7,7 +7,11 @@ import { AuthChangeEvent, Session } from '@supabase/supabase-js';
   providedIn: 'root',
 })
 export class AuthRepository {
-  private supabase = inject(SupabaseService).client;
+  private supabaseService = inject(SupabaseService);
+
+  private get supabase() {
+    return this.supabaseService.client;
+  }
 
   public signUp({ email, name, password }: RegisterData) {
     return this.supabase.auth.signUp({

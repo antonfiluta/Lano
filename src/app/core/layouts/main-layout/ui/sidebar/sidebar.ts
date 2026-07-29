@@ -4,9 +4,9 @@ import { AuthStore } from '@core/stores/auth.store';
 import { Logo } from '@shared/ui/logo/logo';
 import { LucideDynamicIcon } from '@lucide/angular';
 import { LucidePanelLeftClose, LucidePanelLeftOpen } from '@lucide/angular';
-import { SidebarService } from '@core/layouts/main-layout/serivces/sidebar.service';
+import { SidebarService } from '@core/layouts/main-layout/services/sidebar.service';
 import { CommonModule } from '@angular/common';
-import { NavSerice } from '../../serivces/nav.service';
+import { NavSerice } from '../../services/nav.service';
 
 @Component({
   selector: 'app-sidebar',

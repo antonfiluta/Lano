@@ -17,10 +17,12 @@ import { AuthRepository } from '../repositories/auth.repository';
 import { Profile } from '@features/auth/models/profile.model';
 import { ProfileRepository } from '../repositories/profile.repository';
 import { ErrorHandler } from '@core/services/error-handler/error-handler';
-import { mapProfile, mapUser } from '@features/auth/utils/data.mapper';
+import { mapProfile, mapUser } from '@features/auth/utils/auth.mapper';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { NotificationsService } from '@core/services/notifications/notifications.service';
 import { RedirectService } from '@features/auth/services/redirect';
+import { SupabaseService } from '@core/services/supabase/supabase.service';
+import { Subscription } from 'rxjs';
 
 const initialAuthState: AuthState = {
   user: null,
@@ -49,40 +51,50 @@ export const AuthStore = signalStore(
     (
       store,
       authRepo = inject(AuthRepository),
-      profileRepo = inject(ProfileRepository),
       errorHandler = inject(ErrorHandler),
       notify = inject(NotificationsService),
+      profileRepo = inject(ProfileRepository),
       redirectService = inject(RedirectService),
-    ) => ({
-      async login(credentials: LoginData) {
-        return this._coverRequest(() => authRepo.signIn(credentials));
-      },
+      supabaseService = inject(SupabaseService),
+    ) => {
+      let authSubscription: { unsubscribe: () => void } | null = null;
+      let visibilitySubscription: Subscription | null = null;
+      let skipSideEffects = false;
+      let skipTimer: number | null = null;
 
-      async register(credentials: RegisterData) {
-        return this._coverRequest(() => authRepo.signUp(credentials));
-      },
-
-      async logout() {
-        return this._coverRequest(() => authRepo.signOut());
-      },
-
-      async _coverRequest(request: () => AuthRequest) {
+      const coverRequest = async (
+        request: () => AuthRequest,
+      ): Promise<boolean> => {
         if (store.isLoading()) return false;
         patchState(store, { isLoading: true });
         try {
           const { error } = await request();
           if (error) throw error;
+          patchState(store, { isLoading: false });
           return true;
         } catch (error) {
           errorHandler.handle(error, 'AuthStore CoverRequest');
           patchState(store, { isLoading: false });
           return false;
         }
-      },
+      };
 
-      async _applySession(eventType: AuthChangeEvent, session: Session | null) {
-        notify.showByAuthEvent(eventType);
-        // 1. Если сессии нет — просто сбрасываем состояние и выходим
+      const applySession = async (
+        eventType: AuthChangeEvent,
+        session: Session | null,
+      ) => {
+        const shouldSkip = skipSideEffects;
+        skipSideEffects = false;
+
+        if (skipTimer) {
+          clearTimeout(skipTimer);
+          skipTimer = null;
+        }
+
+        if (!shouldSkip) {
+          notify.showByAuthEvent(eventType);
+        }
+
         if (!session) {
           patchState(store, {
             user: null,
@@ -91,10 +103,10 @@ export const AuthStore = signalStore(
             isLoading: false,
           });
 
-          if (eventType !== 'INITIAL_SESSION')
+          if (eventType !== 'INITIAL_SESSION' && !shouldSkip) {
             redirectService.redirectUser(true);
+          }
         } else {
-          // 2. Сессия есть — пытаемся загрузить профиль
           try {
             const { data, error } = await profileRepo.getProfile(
               session.user.id,
@@ -111,23 +123,37 @@ export const AuthStore = signalStore(
               isLoading: false,
             });
 
-            if (eventType !== 'INITIAL_SESSION')
+            if (eventType !== 'INITIAL_SESSION' && !shouldSkip) {
               redirectService.redirectUser(false);
+            }
           } catch (error) {
-            // 3. Выходим если не найден профиль для текущей сессии
             errorHandler.handle(error, 'AuthStore.onAuthStateChange');
             await authRepo.signOut();
           }
         }
 
-        if (eventType === 'INITIAL_SESSION') {
-          patchState(store, {
-            initialized: true,
-          });
+        if (eventType === 'INITIAL_SESSION' && !skipSideEffects) {
+          patchState(store, { initialized: true });
         }
-      },
+      };
 
-      async _initialize() {
+      const subscribeToAuthChanges = () => {
+        if (authSubscription) {
+          authSubscription.unsubscribe();
+          authSubscription = null;
+        }
+
+        const {
+          data: { subscription },
+        } = authRepo.onAuthStateChange((event, session) => {
+          applySession(event, session).catch((err) => {
+            errorHandler.handle(err, 'AuthStore.onAuthStateChange');
+          });
+        });
+        authSubscription = subscription;
+      };
+
+      const initialize = async () => {
         patchState(store, { isLoading: true });
 
         try {
@@ -136,11 +162,39 @@ export const AuthStore = signalStore(
           errorHandler.handle(error, 'AuthStore Initialize');
         }
 
-        authRepo.onAuthStateChange(async (event, session) => {
-          await this._applySession(event, session);
-        });
-      },
-    }),
+        subscribeToAuthChanges();
+
+        if (visibilitySubscription) {
+          visibilitySubscription.unsubscribe();
+        }
+
+        visibilitySubscription = supabaseService.visibilityChanged$.subscribe(
+          () => {
+            skipSideEffects = true;
+            if (skipTimer) {
+              clearTimeout(skipTimer);
+            }
+            skipTimer = setTimeout(() => {
+              skipSideEffects = false;
+              skipTimer = null;
+            }, 1000);
+          },
+        );
+      };
+
+      return {
+        login: (credentials: LoginData) => {
+          return coverRequest(() => authRepo.signIn(credentials));
+        },
+        register: (credentials: RegisterData) => {
+          return coverRequest(() => authRepo.signUp(credentials));
+        },
+        logout: () => {
+          return coverRequest(() => authRepo.signOut());
+        },
+        _initialize: initialize,
+      };
+    },
   ),
   withHooks({
     onInit(store) {

@@ -11,6 +11,7 @@ import { AuthStore } from '@core/stores/auth.store';
 import Aura from '@primeuix/themes/aura';
 import { ThemeStore } from '@core/stores/theme.store';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '@core/services/supabase/supabase.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -28,6 +29,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       inject(ThemeStore);
       inject(AuthStore);
+      inject(SupabaseService);
     }),
   ],
 };

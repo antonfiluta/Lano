@@ -5,7 +5,11 @@ import { SupabaseService } from '@core/services/supabase/supabase.service';
   providedIn: 'root',
 })
 export class ProfileRepository {
-  private supabase = inject(SupabaseService).client;
+  private supabaseService = inject(SupabaseService);
+
+  private get supabase() {
+    return this.supabaseService.client;
+  }
 
   public getProfile(userId: string) {
     return this.supabase.from('profiles').select('*').eq('id', userId).single();

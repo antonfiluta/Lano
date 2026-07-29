@@ -1,14 +1,51 @@
 import { Injectable } from '@angular/core';
 import { Database } from '@shared/types/database.types';
 import { environment } from '@env/environment';
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
+import { Subject } from 'rxjs/internal/Subject';
 
 @Injectable({
   providedIn: 'root',
 })
 export class SupabaseService {
-  readonly client = createClient<Database>(
-    environment.supabase.url,
-    environment.supabase.key,
-  );
+  private _client: SupabaseClient;
+  private _visibilityChanged$ = new Subject<void>();
+
+  constructor() {
+    this._client = this.createClient();
+    this.setupVisibilityListener();
+  }
+
+  get client(): SupabaseClient {
+    return this._client;
+  }
+
+  get visibilityChanged$() {
+    return this._visibilityChanged$.asObservable();
+  }
+
+  private createClient(): SupabaseClient {
+    return createClient<Database>(
+      environment.supabase.url,
+      environment.supabase.key,
+      {
+        auth: {
+          persistSession: true,
+          autoRefreshToken: true,
+          storage: localStorage,
+        },
+        realtime: {
+          heartbeatIntervalMs: 5000,
+        },
+      },
+    );
+  }
+
+  private setupVisibilityListener(): void {
+    document.addEventListener('visibilitychange', () => {
+      if (document.visibilityState === 'visible') {
+        this._visibilityChanged$.next();
+      }
+    });
+  }
 }
