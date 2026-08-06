@@ -1,5 +1,5 @@
 <div class="space-y-8">
-  <div class="flex flex-wrap items-center justify-between gap-4">
+  <section class="flex flex-wrap items-center justify-between gap-4">
     <div>
       <h1 class="text-surface-800 dark:text-surface-100 text-2xl font-bold">
         My Boards
@@ -17,7 +17,7 @@
           type="text"
           placeholder="Search boards..."
           class="border-surface-200/50 focus:border-primary-400 focus:ring-primary-400/20 dark:border-surface-700/50 dark:bg-surface-900/70 dark:focus:border-primary-500 w-48 rounded-lg border bg-white/70 px-10 py-2 text-sm backdrop-blur-sm focus:ring-2 focus:outline-none"
-          [(ngModel)]="searchQuery"
+          [formControl]="searchControl"
         />
       </div>
       <button
@@ -28,35 +28,43 @@
         <span>New Board</span>
       </button>
     </div>
-  </div>
+  </section>
 
-  <div class="grid grid-cols-2 gap-4 sm:grid-cols-4">
-    @for (stat of testStats(); track stat.label) {
+  <section class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    @for (stat of statCards; track stat.valueName) {
       <div
         class="border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
       >
-        <div class="flex items-center gap-2">
-          <i [class]="'pi ' + stat.icon + ' text-lg ' + stat.color"></i>
-          <span class="text-surface-500 dark:text-surface-400 text-sm">{{
-            stat.label
-          }}</span>
-        </div>
-        <p
-          class="text-surface-800 dark:text-surface-100 mt-2 text-2xl font-bold"
-        >
-          {{ stat.value }}
-        </p>
+        @if (statValues(); as values) {
+          <div class="mb-2 flex items-center gap-2">
+            <i [class]="'pi ' + stat.icon + ' text-lg ' + stat.color"></i>
+            <span class="text-surface-500 dark:text-surface-400 text-sm">
+              {{ stat.label }}
+            </span>
+          </div>
+          <p
+            class="text-surface-800 dark:text-surface-100 flex text-2xl font-bold"
+          >
+            {{ values[stat.valueName] || '' }}
+          </p>
+        } @else {
+          <div class="mb-2 flex gap-2">
+            <p-skeleton shape="circle" size="1.4rem" />
+            <p-skeleton height="1.4rem" width="10.5rem" />
+          </div>
+          <p-skeleton height="1.5rem" width="4.5rem" />
+        }
       </div>
     }
-  </div>
+  </section>
 
-  <!-- Список досок -->
-  <div>
+  <section>
     <h2
       class="text-surface-700 dark:text-surface-300 mb-4 text-lg font-semibold"
     >
       All Boards ({{ filteredBoards().length }})
     </h2>
+
     <div
       class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
     >
@@ -65,7 +73,6 @@
           [routerLink]="['/boards', board.id]"
           class="group border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 relative overflow-hidden rounded-xl border bg-white/70 p-5 shadow-sm backdrop-blur-sm transition-all hover:scale-[1.02] hover:shadow-md"
         >
-          <!-- Градиентный фон при наведении -->
           <div
             class="absolute inset-0 bg-linear-to-br opacity-0 transition-opacity group-hover:opacity-10"
             [class]="board.background"
@@ -92,7 +99,6 @@
             ></i>
           </div>
 
-          <!-- Прогресс-бар -->
           <div
             class="bg-surface-200 dark:bg-surface-700 relative mt-4 h-1.5 w-full rounded-full"
           >
@@ -109,10 +115,10 @@
         </a>
       }
 
-      <!-- Карточка создания новой доски (всегда последняя) -->
       <button
         (click)="addBoard()"
-        class="group border-surface-300/50 hover:border-primary-400/50 hover:bg-primary-500/5 dark:border-surface-600/50 dark:bg-surface-900/40 dark:hover:border-primary-400/40 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-white/40 p-8 backdrop-blur-sm transition-all"
+        class="group border-surface-300/50 hover:border-primary-400/50 hover:bg-primary-500/5 dark:border-surface-600/50 dark:bg-surface-900/40 dark:hover:border-primary-400/40 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-white/40 p-8 backdrop-blur-sm transition-all disabled:cursor-not-allowed disabled:grayscale-75"
+        [disabled]="isStoreLoading()"
       >
         <div
           class="text-surface-400 dark:text-surface-500 group-hover:text-primary-500 flex flex-col items-center gap-2 transition-colors"
@@ -122,5 +128,5 @@
         </div>
       </button>
     </div>
-  </div>
+  </section>
 </div>

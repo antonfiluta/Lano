@@ -18,7 +18,7 @@ export const MAIN_ROUTES: Routes = [
         path: 'boards',
         title: 'Tasks Log',
         loadComponent: () =>
-          import('@features/board/pages/boards-overview/boards-overview').then(
+          import('@features/boards-overview/pages/boards-overview/boards-overview').then(
             (m) => m.BoardsOverview,
           ),
       },
@@ -26,7 +26,9 @@ export const MAIN_ROUTES: Routes = [
         path: 'boards/:id',
         title: 'Task Board',
         loadChildren: () =>
-          import('@features/board/board.routes').then((m) => m.BOARD_ROUTES),
+          import('@features/boards-overview/board.routes').then(
+            (m) => m.BOARD_ROUTES,
+          ),
       },
       {
         path: 'habits',

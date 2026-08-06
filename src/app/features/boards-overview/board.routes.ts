@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { BoardLayout } from './pages/board-layout/board-layout';
+import { BoardLayout } from '../board-tasks/pages/board-layout/board-layout';
 
 export const BOARD_ROUTES: Routes = [
   {
@@ -10,7 +10,7 @@ export const BOARD_ROUTES: Routes = [
         path: 'kanban',
         title: 'Kanban View',
         loadComponent: () =>
-          import('./pages/board-views/kanban-view/kanban-view').then(
+          import('../board-tasks/pages/board-views/kanban-view/kanban-view').then(
             (m) => m.KanbanView,
           ),
       },
@@ -18,7 +18,7 @@ export const BOARD_ROUTES: Routes = [
         path: 'tasks',
         title: 'All Tasks View',
         loadComponent: () =>
-          import('./pages/board-views/all-tasks-view/all-tasks-view').then(
+          import('../board-tasks/pages/board-views/all-tasks-view/all-tasks-view').then(
             (m) => m.AllTasksView,
           ),
       },
@@ -26,7 +26,7 @@ export const BOARD_ROUTES: Routes = [
         path: 'calendar',
         title: 'Calendar View',
         loadComponent: () =>
-          import('./pages/board-views/calendar-view/calendar-view').then(
+          import('../board-tasks/pages/board-views/calendar-view/calendar-view').then(
             (m) => m.CalendarView,
           ),
       },

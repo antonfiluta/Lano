@@ -8,7 +8,7 @@ import { Subject } from 'rxjs/internal/Subject';
   providedIn: 'root',
 })
 export class SupabaseService {
-  private _client: SupabaseClient;
+  private _client: SupabaseClient<Database>;
   private _visibilityChanged$ = new Subject<void>();
 
   constructor() {
@@ -16,7 +16,7 @@ export class SupabaseService {
     this.setupVisibilityListener();
   }
 
-  get client(): SupabaseClient {
+  get client(): SupabaseClient<Database> {
     return this._client;
   }
 
@@ -24,7 +24,7 @@ export class SupabaseService {
     return this._visibilityChanged$.asObservable();
   }
 
-  private createClient(): SupabaseClient {
+  private createClient(): SupabaseClient<Database> {
     return createClient<Database>(
       environment.supabase.url,
       environment.supabase.key,

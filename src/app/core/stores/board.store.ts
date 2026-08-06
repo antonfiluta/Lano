@@ -1,7 +1,13 @@
-import { computed, ErrorHandler, inject } from '@angular/core';
+import { ErrorHandler, inject } from '@angular/core';
 import { BoardRepository } from '@core/repositories/board.repository';
-import { AllBoardsStats, Board } from '@features/board/models/board.models';
-import { mapBoards } from '@features/board/utils/board.mapper';
+import {
+  BoardState,
+  BoardUpdates,
+} from '@features/boards-overview/models/board.models';
+import {
+  extractStats,
+  mapBoard,
+} from '@features/boards-overview/utils/board.mapper';
 import {
   patchState,
   signalStore,
@@ -10,114 +16,137 @@ import {
   withMethods,
   withState,
 } from '@ngrx/signals';
+import { AuthStore } from './auth.store';
 
 const initialBoardState: BoardState = {
   boards: [],
-  currentBoardId: null,
   stats: null,
+  boardSearchQuery: '',
   isLoading: false,
   error: false,
 };
-
-export interface BoardState {
-  boards: Board[];
-  currentBoardId: string | null;
-  stats: AllBoardsStats | null;
-  isLoading: boolean;
-  error: boolean;
-}
 
 export const BoardStore = signalStore(
   { providedIn: 'root' },
   withState(initialBoardState),
   withComputed((store) => ({
-    statCards: computed(() => {
-      const s = store.stats();
-      if (!s) return [];
-      return [
-        {
-          label: 'Total Tasks',
-          value: s.total,
-          icon: 'pi-list',
-          color: 'text-primary-500',
-        },
-        {
-          label: 'In Progress',
-          value: s.active,
-          icon: 'pi-spinner',
-          color: 'text-amber-500',
-        },
-        {
-          label: 'Completed',
-          value: s.completed,
-          icon: 'pi-check-circle',
-          color: 'text-emerald-500',
-        },
-        {
-          label: 'Overdue',
-          value: s.overdue,
-          icon: 'pi-exclamation-circle',
-          color: 'text-red-500',
-        },
-      ];
-    }),
+    filteredBoards: () => {
+      const boards = store.boards();
+      const query = store.boardSearchQuery().toLowerCase().trim();
+
+      const filtered = query
+        ? boards.filter((board) => board.title.toLowerCase().includes(query))
+        : boards;
+
+      return filtered;
+    },
   })),
   withMethods(
     (
       store,
       boardRepo = inject(BoardRepository),
+      authStore = inject(AuthStore),
       errorHandler = inject(ErrorHandler),
-    ) => ({
-      async load() {
-        patchState(store, { isLoading: true });
-
-        try {
-          const { error, data } = await boardRepo.getBoards();
-          if (error) throw error;
-          const boards = mapBoards(data ?? []);
-
-          patchState(store, {
-            boards,
-            error: false,
-            isLoading: false,
-          });
-        } catch (error) {
-          errorHandler.handleError(error);
-          patchState(store, {
-            error: true,
-            isLoading: false,
-          });
-        }
-      },
-
-      async loadStats() {
+    ) => {
+      const withLoading = async (fn: () => void) => {
         patchState(store, { isLoading: true, error: false });
 
         try {
-          const { data, error } = await boardRepo.getStats();
-          if (error) throw error;
-
-          if (!data) return;
-
+          await fn();
           patchState(store, {
-            stats: data as unknown as AllBoardsStats,
-            error: false,
             isLoading: false,
           });
         } catch (error) {
           errorHandler.handleError(error);
+
           patchState(store, {
             error: true,
             isLoading: false,
           });
         }
-      },
-    }),
+      };
+
+      const loadBoards = async () => {
+        withLoading(async () => {
+          const { data, error } = await boardRepo.getBoardsWithStats();
+
+          if (error) throw error;
+
+          const { stats, boards } = extractStats(data);
+
+          patchState(store, {
+            stats,
+            boards,
+          });
+        });
+      };
+
+      const addBoard = async () => {
+        withLoading(async () => {
+          const owner_id = authStore.user()?.id;
+          if (!owner_id) throw new Error('User is undefiend');
+
+          const { data, error } = await boardRepo.addBoard(owner_id);
+          if (error) throw error;
+
+          const board = mapBoard(data);
+
+          patchState(store, {
+            boards: [...store.boards(), board],
+          });
+        });
+      };
+
+      const deleteBoard = async (boardId: string) => {
+        withLoading(async () => {
+          const { error } = await boardRepo.deleteBoard(boardId);
+
+          if (error) throw error;
+
+          patchState(store, {
+            boards: store.boards().filter((board) => board.id !== boardId),
+          });
+        });
+      };
+
+      const updateBoard = async (boardId: string, updates: BoardUpdates) => {
+        withLoading(async () => {
+          const { error } = await boardRepo.updateBoard(boardId, updates);
+
+          if (error) throw error;
+
+          patchState(store, {
+            boards: store.boards().map((board) => {
+              if (board.id === boardId) {
+                return {
+                  ...board,
+                  ...updates,
+                };
+              }
+              return board;
+            }),
+          });
+        });
+      };
+
+      const searchBoard = (boardSearchQuery: string) => {
+        patchState(store, {
+          boardSearchQuery,
+        });
+      };
+
+      return {
+        _loadBoards: loadBoards,
+        addBoard,
+        deleteBoard,
+        updateBoard,
+        searchBoard,
+      };
+    },
   ),
   withHooks((store) => ({
     onInit() {
-      store.load();
-      store.loadStats();
+      store._loadBoards();
     },
   })),
 );
