@@ -1,58 +1,138 @@
 <aside
-  class="block-bg flex h-full flex-col p-4 transition-all duration-150"
+  class="block-bg flex h-full flex-col justify-between p-4 transition-all duration-150"
   [class]="isOpen() ? 'w-64' : 'w-16'"
 >
-  <div
-    class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b pb-3"
-  >
-    <app-logo [size]="isOpen() ? 'sm' : 'xs'" [onlyIcon]="!isOpen()"></app-logo>
-
-    @if (isMobile()) {
-      <button
-        pButton
-        iconOnly
-        variant="text"
-        severity="secondary"
-        size="small"
-        (click)="toggle()"
-        class="border-none! bg-transparent! px-1.5! py-1! hover:bg-black/5! dark:hover:bg-white/5!"
-      >
-        <svg [lucideIcon]="icon()" [size]="21" strokeWidth="1.5"></svg>
-      </button>
-    }
-  </div>
-
-  <nav
-    class="relative flex flex-1 flex-col gap-1 py-4"
-    aria-label="Main navigation"
-  >
+  <div class="flex flex-col">
     <div
-      class="active-link-bg"
-      [class]="
-        (isOpen() ? 'h-10' : 'mt-[3px] h-[30px]') +
-        (isBgAnimated() ? ' duration-200' : ' duration-[0s]')
-      "
-      [style.transform]="bgPosition()"
-    ></div>
+      class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b pb-3"
+    >
+      <app-logo
+        [size]="isOpen() ? 'sm' : 'xs'"
+        [onlyIcon]="!isOpen()"
+      ></app-logo>
 
-    @for (route of routes; track route.path; let i = $index) {
-      <a
-        [routerLink]="route.path"
-        routerLinkActive="!text-primary-600 dark:!text-primary-400 hover:!bg-white/0 dark:!hover:bg-white/0"
-        class="text-surface-600 dark:text-surface-300 hover:bg-surface-100/80 dark:hover:bg-surface-800/80 relative z-10 flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-transform duration-200"
-        [class]="isOpen() ? 'px-3' : 'pl-[7px]'"
-      >
-        <i [class]="'pi pi-' + route.icon + ' text-base'"></i>
-
-        <span
-          class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
-          [class]="isOpen() ? 'max-w-40 opacity-100' : 'max-w-0 opacity-0'"
+      @if (isMobile()) {
+        <button
+          pButton
+          iconOnly
+          variant="text"
+          severity="secondary"
+          size="small"
+          (click)="toggleSidebar()"
+          class="border-none! bg-transparent! px-1.5! py-1! hover:bg-black/5! dark:hover:bg-white/5!"
         >
-          {{ route.title }}
-        </span>
-      </a>
-    }
-  </nav>
+          <svg [lucideIcon]="icon()" [size]="21" strokeWidth="1.5"></svg>
+        </button>
+      }
+    </div>
+
+    <nav
+      class="relative flex flex-1 flex-col gap-1 py-4"
+      aria-label="Main navigation"
+    >
+      <div
+        class="active-link-bg"
+        [class]="
+          (isOpen() ? 'h-10' : 'mt-[3px] h-[30px]') +
+          (isBgAnimated() ? ' duration-200' : ' duration-[0s]')
+        "
+        [style.transform]="bgPosition()"
+      ></div>
+
+      @for (route of routes; track route.path; let i = $index) {
+        <a
+          [routerLink]="route.path"
+          routerLinkActive="!text-primary-600 dark:!text-primary-400 hover:!bg-white/0 dark:!hover:bg-white/0"
+          class="text-surface-600 dark:text-surface-300 hover:bg-surface-100/80 dark:hover:bg-surface-800/80 relative z-10 flex items-center gap-3 rounded-lg py-2.5 text-sm font-medium transition-transform duration-200"
+          [class]="isOpen() ? 'px-3' : 'pl-[7px]'"
+        >
+          <i [class]="'pi pi-' + route.icon + ' text-base'"></i>
+
+          <span
+            class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
+            [class]="isOpen() ? 'max-w-40 opacity-100' : 'max-w-0 opacity-0'"
+          >
+            {{ route.title }}
+          </span>
+        </a>
+      }
+    </nav>
+
+    <div
+      class="border-surface-200 dark:border-surface-700 flex flex-col overflow-hidden border-t pt-5"
+    >
+      <button
+        class="text-surface-600 hover:bg-surface-100/80 dark:hover:bg-surface-800/80 hover:text-surface-700 dark:text-surface-400 dark:hover:text-surface-200 relative z-10 flex cursor-pointer items-center justify-between rounded-lg px-3 py-2 text-xs font-semibold tracking-wider uppercase transition-colors"
+        [class.justify-center]="!isOpen()"
+        (click)="toggleBoardsCollapse()"
+      >
+        @if (isOpen()) {
+          <span class="text-ellipsis whitespace-nowrap">My Boards</span>
+          <i
+            class="pi text-xs transition-transform duration-200"
+            [class.pi-chevron-up]="boardsExpanded()"
+            [class.pi-chevron-down]="!boardsExpanded()"
+          ></i>
+        } @else {
+          <i
+            class="pi text-xs transition-transform duration-200"
+            [class.pi-chevron-up]="boardsExpanded()"
+            [class.pi-chevron-down]="!boardsExpanded()"
+          ></i>
+        }
+      </button>
+
+      <div
+        class="relative overflow-y-auto transition-all duration-300 ease-in-out"
+        [style.max-height]="boardsExpanded() ? 'calc(40vh)' : '0px'"
+        [style.opacity]="boardsExpanded() ? 1 : 0"
+        [class]="
+          (boardsExpanded() ? 'z-0 translate-y-0' : 'z-[-1] -translate-y-12') +
+          (isOpen() ? ' pl-2' : ' pl-0')
+        "
+      >
+        <ul class="mt-1 flex flex-col gap-1 pb-2">
+          @for (board of boards(); track board.id) {
+            <li class="list-none">
+              <a
+                [routerLink]="'/boards/' + board.id"
+                routerLinkActive="hover:bg-primary-500/10! !text-primary-600 dark:!text-primary-400 from-primary-500/10! bg-primary-500/10 bg-linear-to-r! border-primary-500/20! to-transparent! shadow-sm!"
+                class="group text-surface-600 hover:bg-surface-100/80 dark:text-surface-300 dark:hover:bg-surface-800/80 shadow-primary-500/10! relative z-10 flex items-center rounded-lg border-[0.5px] border-transparent text-sm font-medium"
+                [class]="
+                  isOpen()
+                    ? 'my-[0.5px] gap-2 py-1 pr-3 pl-1'
+                    : 'my-1 justify-center gap-0 py-[0.5px] pr-0 pl-0'
+                "
+              >
+                <div
+                  class="text-surface-600 dark:text-surface-300 flex size-7 shrink-0 items-center justify-center rounded-md transition-opacity duration-200"
+                >
+                  <i
+                    routerLinkActive="text-primary-600! dark:text-primary-400!"
+                    [class]="'pi pi-' + board.icon + ' text-xs'"
+                  ></i>
+                </div>
+
+                <span
+                  class="inline-block overflow-hidden text-ellipsis whitespace-nowrap transition-all duration-200"
+                  [class]="
+                    isOpen() ? 'max-w-32 opacity-100' : 'max-w-0 opacity-0'
+                  "
+                >
+                  {{ board.title }}
+                </span>
+
+                <span
+                  [routerLinkActive]="isOpen() ? 'block!' : ''"
+                  class="bg-primary-500 absolute top-1/2 right-2 ml-auto hidden size-1.5 -translate-y-1/2 rounded-full"
+                ></span>
+              </a>
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+  </div>
 
   <div class="border-surface-200 dark:border-surface-700 border-t">
     <button

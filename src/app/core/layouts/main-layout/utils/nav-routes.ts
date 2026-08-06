@@ -25,11 +25,3 @@ export const NAV_ROUTES = [
     icon: 'cog',
   },
 ];
-
-export const NAV_MOCK_BOARDS = [
-  {
-    title: '',
-    icon: '',
-    id: '',
-  },
-];

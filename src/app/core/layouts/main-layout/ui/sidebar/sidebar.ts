@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthStore } from '@core/stores/auth.store';
 import { Logo } from '@shared/ui/logo/logo';
@@ -7,6 +7,7 @@ import { LucidePanelLeftClose, LucidePanelLeftOpen } from '@lucide/angular';
 import { SidebarService } from '@core/layouts/main-layout/services/sidebar.service';
 import { CommonModule } from '@angular/common';
 import { NavSerice } from '../../services/nav.service';
+import { BoardStore } from '@core/stores/board.store';
 
 @Component({
   selector: 'app-sidebar',
@@ -22,14 +23,17 @@ import { NavSerice } from '../../services/nav.service';
 })
 export class Sidebar {
   private authStore = inject(AuthStore);
+  private boardStore = inject(BoardStore);
   private sidebar = inject(SidebarService);
   private nav = inject(NavSerice);
+
+  protected boardsExpanded = signal<boolean>(true);
+  protected boards = this.boardStore.boards;
 
   protected isOpen = this.sidebar.isOpen;
   protected isMobile = this.sidebar.isMobile;
 
   protected routes = this.nav.routes;
-  protected boards = this.nav.boards;
   protected bgPosition = this.nav.bgPosition;
   protected isBgAnimated = this.nav.isBgAnimated;
 
@@ -37,6 +41,7 @@ export class Sidebar {
     this.isOpen() ? LucidePanelLeftClose : LucidePanelLeftOpen,
   );
 
-  protected toggle = () => this.sidebar.toggle();
+  protected toggleBoardsCollapse = () => this.boardsExpanded.update((v) => !v);
+  protected toggleSidebar = () => this.sidebar.toggle();
   protected logout = () => this.authStore.logout();
 }
