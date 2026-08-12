@@ -1,0 +1,32 @@
+<div
+  class="active-link-bg"
+  [class]="
+    (isOpen() ? 'h-10' : 'mt-[3px] h-[30px]') +
+    (isBgAnimated() ? ' duration-200' : ' duration-[0s]')
+  "
+  [style.transform]="bgPosition()"
+></div>
+
+@for (route of routes; track route.path) {
+  <a
+    [routerLink]="route.path"
+    routerLinkActive="!text-primary-600 dark:!text-primary-400 hover:!bg-white/0 dark:!hover:bg-white/0"
+    class="text-surface-600 dark:text-surface-300 hover:bg-surface-100/80 dark:hover:bg-surface-800/80 relative z-10 flex items-center rounded-lg text-sm font-medium transition-transform duration-200"
+    [class]="
+      isOpen()
+        ? 'my-[0.5px] gap-3 px-1 py-[5px]'
+        : 'my-[5px] justify-center gap-0 px-0 py-[0.5px]'
+    "
+  >
+    <div class="flex size-7 items-center justify-center">
+      <i [class]="'pi pi-' + route.icon"></i>
+    </div>
+
+    <span
+      class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
+      [class]="isOpen() ? 'max-w-32 opacity-100' : 'max-w-0 opacity-0'"
+    >
+      {{ route.title }}
+    </span>
+  </a>
+}

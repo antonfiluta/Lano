@@ -1,0 +1,4 @@
+:host {
+  @reference "tailwindcss";
+  @apply relative flex flex-col gap-1;
+}

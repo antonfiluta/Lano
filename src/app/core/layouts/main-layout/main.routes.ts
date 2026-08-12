@@ -23,7 +23,7 @@ export const MAIN_ROUTES: Routes = [
           ),
       },
       {
-        path: 'boards/:id',
+        path: 'boards/:boardId',
         title: 'Task Board',
         loadChildren: () =>
           import('@features/boards-overview/board.routes').then(

@@ -13,8 +13,9 @@ export class NavSerice {
   public isBgAnimated = computed(() => {
     return this.navigationCount() > 1;
   });
+
   public bgPosition = computed(() => {
-    return `translateY(${this.activeIndex() * 40.35}px)`;
+    return `translateY(${this.activeIndex() * 41}px)`;
   });
 
   private navigationCount = signal<number>(0);

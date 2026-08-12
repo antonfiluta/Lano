@@ -1,4 +1,4 @@
-import { ErrorHandler, inject } from '@angular/core';
+import { inject } from '@angular/core';
 import { BoardRepository } from '@core/repositories/board.repository';
 import {
   BoardState,
@@ -17,6 +17,8 @@ import {
   withState,
 } from '@ngrx/signals';
 import { AuthStore } from './auth.store';
+import { ErrorHandler } from '@core/services/error-handler/error-handler';
+import { NotificationsService } from '@core/services/notifications/notifications.service';
 
 const initialBoardState: BoardState = {
   boards: [],
@@ -47,6 +49,7 @@ export const BoardStore = signalStore(
       boardRepo = inject(BoardRepository),
       authStore = inject(AuthStore),
       errorHandler = inject(ErrorHandler),
+      notify = inject(NotificationsService),
     ) => {
       const withLoading = async (fn: () => void) => {
         patchState(store, { isLoading: true, error: false });
@@ -57,7 +60,7 @@ export const BoardStore = signalStore(
             isLoading: false,
           });
         } catch (error) {
-          errorHandler.handleError(error);
+          errorHandler.handle(error);
 
           patchState(store, {
             error: true,
@@ -103,6 +106,11 @@ export const BoardStore = signalStore(
 
           if (error) throw error;
 
+          notify.success({
+            summary: 'Deleted',
+            detail: 'Board deleted successfully',
+          });
+
           patchState(store, {
             boards: store.boards().filter((board) => board.id !== boardId),
           });
@@ -114,6 +122,11 @@ export const BoardStore = signalStore(
           const { error } = await boardRepo.updateBoard(boardId, updates);
 
           if (error) throw error;
+
+          notify.success({
+            summary: 'Updated',
+            detail: 'Board updated successfully',
+          });
 
           patchState(store, {
             boards: store.boards().map((board) => {
@@ -145,8 +158,6 @@ export const BoardStore = signalStore(
     },
   ),
   withHooks((store) => ({
-    onInit() {
-      store._loadBoards();
-    },
+    onInit: store._loadBoards,
   })),
 );

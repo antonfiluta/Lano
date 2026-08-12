@@ -1,0 +1,6 @@
+@import 'tailwindcss-primeui';
+
+:host {
+  @reference "tailwindcss";
+  @apply flex flex-col overflow-hidden;
+}

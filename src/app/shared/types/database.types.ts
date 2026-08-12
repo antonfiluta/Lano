@@ -130,7 +130,7 @@ export interface Database {
         Row: {
           assignee_id: string | null;
           board_id: string;
-          created_at: string | null;
+          created_at: string;
           created_by: string;
           description: string | null;
           due_date: string | null;
@@ -144,7 +144,7 @@ export interface Database {
         Insert: {
           assignee_id?: string | null;
           board_id: string;
-          created_at?: string | null;
+          created_at?: string;
           created_by: string;
           description?: string | null;
           due_date?: string | null;
@@ -158,7 +158,7 @@ export interface Database {
         Update: {
           assignee_id?: string | null;
           board_id?: string;
-          created_at?: string | null;
+          created_at?: string;
           created_by?: string;
           description?: string | null;
           due_date?: string | null;

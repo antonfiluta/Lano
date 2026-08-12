@@ -1,3 +1,12 @@
+import { Database } from '@shared/types/database.types';
+
+export interface TasksState {
+  activeBoardId: string | null;
+  tasks: Task[];
+  isLoading: boolean;
+  error: boolean;
+}
+
 export type TaskStatus = 'to-do' | 'in-progress' | 'completed';
 export type TaskPriority = 'low' | 'medium' | 'high';
 export type BoardView = 'kanban' | 'list' | 'calendar' | 'chart' | 'statistics';
@@ -15,3 +24,5 @@ export interface Task {
   assigneeId: string | null;
   createdAt: string;
 }
+
+export type RawTask = Database['public']['Tables']['tasks']['Row'];
