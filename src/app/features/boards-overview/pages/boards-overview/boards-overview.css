@@ -1,10 +1,8 @@
-/* Все стили уже в Tailwind, но можно добавить анимации */
 :host {
   display: block;
   padding: 1.5rem;
 }
 
-/* Анимация появления карточек */
 @keyframes fadeInUp {
   from {
     opacity: 0;

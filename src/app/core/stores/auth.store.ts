@@ -16,12 +16,12 @@ import {
 import { AuthRepository } from '../repositories/auth.repository';
 import { Profile } from '@features/auth/models/profile.model';
 import { ProfileRepository } from '../repositories/profile.repository';
-import { ErrorHandler } from '@core/services/error-handler/error-handler';
+import { ErrorHandler } from '@core/services/error-handler';
 import { mapProfile, mapUser } from '@features/auth/utils/auth.mapper';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { NotificationsService } from '@core/services/notifications/notifications.service';
+import { NotificationsService } from '@core/services/notifications.service';
 import { RedirectService } from '@features/auth/services/redirect';
-import { SupabaseService } from '@core/services/supabase/supabase.service';
+import { SupabaseService } from '@core/services/supabase.service';
 import { Subscription } from 'rxjs';
 
 const initialAuthState: AuthState = {

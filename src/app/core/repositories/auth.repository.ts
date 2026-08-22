@@ -1,6 +1,6 @@
 import { inject, Service } from '@angular/core';
 import { LoginData, RegisterData } from '@features/auth/models/user.model';
-import { SupabaseService } from '@core/services/supabase/supabase.service';
+import { SupabaseService } from '@core/services/supabase.service';
 import { AuthChangeEvent, Session } from '@supabase/supabase-js';
 
 @Service()

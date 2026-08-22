@@ -17,8 +17,9 @@ import {
   withState,
 } from '@ngrx/signals';
 import { AuthStore } from './auth.store';
-import { ErrorHandler } from '@core/services/error-handler/error-handler';
-import { NotificationsService } from '@core/services/notifications/notifications.service';
+import { ErrorHandler } from '@core/services/error-handler';
+import { NotificationsService } from '@core/services/notifications.service';
+import { Router } from '@angular/router';
 
 const initialBoardState: BoardState = {
   boards: [],
@@ -50,6 +51,7 @@ export const BoardStore = signalStore(
       authStore = inject(AuthStore),
       errorHandler = inject(ErrorHandler),
       notify = inject(NotificationsService),
+      router = inject(Router),
     ) => {
       const withLoading = async (fn: () => void) => {
         patchState(store, { isLoading: true, error: false });
@@ -110,6 +112,8 @@ export const BoardStore = signalStore(
             summary: 'Deleted',
             detail: 'Board deleted successfully',
           });
+
+          router.navigateByUrl('/boards');
 
           patchState(store, {
             boards: store.boards().filter((board) => board.id !== boardId),

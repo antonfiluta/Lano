@@ -11,6 +11,7 @@ export interface Board {
   title: string;
   icon: string;
   background: string;
+  description: string;
 }
 
 export interface BoardViewModel extends Board {

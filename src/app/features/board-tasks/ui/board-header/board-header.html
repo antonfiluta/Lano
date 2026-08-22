@@ -1,0 +1,17 @@
+<section
+  class="shadow-surface-200/20 dark:border-surface-800/60 dark:bg-surface-900/60 relative overflow-hidden rounded-2xl border border-white/40 bg-white/70 shadow-sm backdrop-blur-xl transition-all dark:shadow-black/20"
+>
+  <div class="flex items-start justify-between p-6 pb-5">
+    <app-board-header-details [board]="board()"></app-board-header-details>
+
+    <app-board-header-options [board]="board()"></app-board-header-options>
+  </div>
+
+  <div
+    class="border-surface-200/60 dark:border-surface-800/60 flex flex-wrap items-center justify-between gap-3 border-t px-5"
+  >
+    <app-board-header-nav [boardId]="board().id"></app-board-header-nav>
+
+    <app-board-header-actions [boardId]="board().id"></app-board-header-actions>
+  </div>
+</section>

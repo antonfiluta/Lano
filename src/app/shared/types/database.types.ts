@@ -47,6 +47,7 @@ export interface Database {
         Row: {
           background: string;
           created_at: string | null;
+          description: string;
           icon: string;
           id: string;
           owner_id: string;
@@ -55,6 +56,7 @@ export interface Database {
         Insert: {
           background?: string;
           created_at?: string | null;
+          description?: string;
           icon?: string;
           id?: string;
           owner_id: string;
@@ -63,6 +65,7 @@ export interface Database {
         Update: {
           background?: string;
           created_at?: string | null;
+          description?: string;
           icon?: string;
           id?: string;
           owner_id?: string;

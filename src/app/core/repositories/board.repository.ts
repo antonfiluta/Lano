@@ -1,5 +1,5 @@
 import { inject, Service } from '@angular/core';
-import { SupabaseService } from '@core/services/supabase/supabase.service';
+import { SupabaseService } from '@core/services/supabase.service';
 import { BoardUpdates } from '@features/boards-overview/models/board.models';
 
 @Service()

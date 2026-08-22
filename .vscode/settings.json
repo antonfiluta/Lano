@@ -11,7 +11,13 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[html]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.quickSuggestions": {
+      "other": true,
+      "comments": true,
+      "strings": true
+    },
+    "editor.suggest.insertMode": "replace"
   },
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
@@ -24,14 +30,17 @@
   },
 
   "eslint.useFlatConfig": true,
-  "eslint.validate": ["typescript", "html"],
+  // Убираем "html" отсюда, так как angular-eslint настраивается внутри eslint.config.js
+  "eslint.validate": ["typescript", "javascript"],
 
   "tailwindCSS.includeLanguages": {
     "typescript": "javascript",
-    "typescriptreact": "javascript"
+    "typescriptreact": "javascript",
+    "html": "html"
   },
   "editor.quickSuggestions": {
-    "strings": true
+    "strings": true,
+    "other": true
   },
 
   "files.trimTrailingWhitespace": true,
@@ -39,5 +48,8 @@
 
   "css.validate": false,
   "less.validate": false,
-  "scss.validate": false
+  "scss.validate": false,
+
+  // Исправлена опечатка в названии параметра (было strictdiit-types)
+  "angular.angular-language-service.enable-strict-template-type-checking": true
 }

@@ -1,7 +1,6 @@
 import { Database } from '@shared/types/database.types';
 
 export interface TasksState {
-  activeBoardId: string | null;
   tasks: Task[];
   isLoading: boolean;
   error: boolean;
@@ -26,3 +25,10 @@ export interface Task {
 }
 
 export type RawTask = Database['public']['Tables']['tasks']['Row'];
+
+export interface SafeAction {
+  action: () => void;
+  icon: string;
+  title: string;
+  kbd: string;
+}

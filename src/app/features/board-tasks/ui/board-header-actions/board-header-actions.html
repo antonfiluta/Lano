@@ -1,0 +1,19 @@
+@for (action of actionButtons; track action.icon) {
+  <app-prime-button
+    [icon]="action.icon"
+    [pTooltip]="action.label"
+    class="size-8 rounded-md!"
+  >
+  </app-prime-button>
+}
+
+<div class="bg-surface-200 dark:bg-surface-700 mx-2 h-4 w-px"></div>
+
+<button
+  pButton
+  size="small"
+  class="bg-primary-500 hover:bg-primary-600 border-primary-500 shadow-primary-500/20 dark:bg-primary-600 dark:hover:bg-primary-500 dark:border-primary-600 ml-1 flex h-8 items-center gap-1.5 rounded-lg border px-3 text-sm text-white transition-all hover:shadow-md"
+>
+  <i class="pi pi-plus text-xs!"></i>
+  <span>New</span>
+</button>

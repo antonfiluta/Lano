@@ -1,5 +1,5 @@
 import { computed, DOCUMENT, inject } from '@angular/core';
-import { ErrorHandler } from '@core/services/error-handler/error-handler';
+import { ErrorHandler } from '@core/services/error-handler';
 import {
   PrimaryColor,
   SurfaceColor,

@@ -35,14 +35,16 @@
           "
         >
           <div class="flex size-7 items-center justify-center">
-            <i [class]="'pi pi-' + board.icon"></i>
+            <i
+              [class]="'pi pi-' + (board.icon ? board.icon : 'list-check')"
+            ></i>
           </div>
 
           <span
             class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
             [class]="isOpen() ? 'max-w-32 opacity-100' : 'max-w-0 opacity-0'"
           >
-            {{ board.title }}
+            {{ board.title ? board.title : 'New Board' }}
           </span>
 
           <span

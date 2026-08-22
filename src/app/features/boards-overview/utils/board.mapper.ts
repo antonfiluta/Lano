@@ -8,9 +8,9 @@ import {
 export function mapBoard(
   board: Database['public']['Tables']['boards']['Row'],
 ): BoardViewModel {
-  const { id, background, icon, title } = board;
-
-  return { id, background, icon, title, tasks: 0, progress: 0 };
+  const { id, background, icon, title, description } = board;
+  console.log(board);
+  return { id, background, icon, title, description, tasks: 0, progress: 0 };
 }
 
 export function extractStats(

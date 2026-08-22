@@ -1,0 +1,77 @@
+<app-prime-button
+  icon="ellipsis-h"
+  pTooltip="Board Options"
+  class="size-7"
+  (click)="boardOptions.toggle($event)"
+></app-prime-button>
+
+<p-popover #boardOptions>
+  <div class="flex w-56 flex-col">
+    <h3
+      class="text-surface-400 dark:text-surface-500 pb-2 text-[11px] font-semibold tracking-wider uppercase"
+    >
+      Board options
+    </h3>
+
+    <div class="flex flex-col gap-0.5">
+      @for (action of safeActions; track action.title) {
+        <button
+          type="button"
+          pButton
+          text
+          severity="secondary"
+          (click)="action.action(); boardOptions.hide()"
+          class="text-surface-600 hover:text-surface-900 hover:bg-surface-100/80 dark:text-surface-300 dark:hover:text-surface-100 dark:hover:bg-surface-800/80 h-8 w-full justify-start gap-2.5 rounded-md px-2.5! text-sm font-normal transition-colors"
+        >
+          <i
+            [class]="`pi pi-${action.icon} text-surface-400 dark:text-surface-500`"
+          ></i>
+          <span class="flex-1 text-left">{{ action.title }}</span>
+          <kbd
+            class="text-surface-400 dark:text-surface-600 bg-surface-100 dark:bg-surface-800 hidden rounded px-1 py-0.5 font-sans text-[10px] lg:inline"
+          >
+            {{ action.kbd }}
+          </kbd>
+        </button>
+      }
+    </div>
+
+    <div class="bg-surface-200 dark:bg-surface-700/80 mx-2 my-1.5 h-px"></div>
+
+    <div class="flex flex-col gap-0.5">
+      <button
+        type="button"
+        pButton
+        text
+        severity="secondary"
+        (click)="toggleFavorite()"
+        class="text-surface-600 hover:text-surface-900 hover:bg-surface-100/80 dark:text-surface-300 dark:hover:text-surface-100 dark:hover:bg-surface-800/80 h-8 w-full justify-start gap-2.5 rounded-md px-2.5! text-sm font-normal transition-colors"
+      >
+        <i
+          [class]="
+            isFavorite()
+              ? 'pi pi-star-fill'
+              : 'pi pi-star text-surface-400 dark:text-surface-500'
+          "
+        ></i>
+        <span class="flex-1 text-left">
+          {{ isFavorite() ? 'Remove favorite' : 'Add to favorites' }}
+        </span>
+      </button>
+    </div>
+
+    <div class="bg-surface-200 dark:bg-surface-700/80 mx-2 my-1.5 h-px"></div>
+
+    <button
+      type="button"
+      pButton
+      text
+      severity="danger"
+      (click)="deleteBoard(); boardOptions.hide()"
+      class="h-8 w-full justify-start gap-2.5 rounded-md text-sm font-normal text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+    >
+      <i class="pi pi-trash"></i>
+      <span class="flex-1 text-left">Move to Trash</span>
+    </button>
+  </div>
+</p-popover>
