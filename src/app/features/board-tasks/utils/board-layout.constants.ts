@@ -1,3 +1,5 @@
+import { KanbanCol, TaskPriority, TaskStatus } from '../models/tasks.models';
+
 export const BOARD_VIEWS = [
   {
     name: 'By Status',
@@ -80,3 +82,30 @@ export const ICON_OPTIONS = [
 ];
 
 export const DEFAULT_ICON = 'list-check';
+
+export const KANBAN_COLS: KanbanCol[] = [
+  {
+    type: 'to-do',
+    color: 'gray',
+  },
+  {
+    type: 'in-progress',
+    color: 'blue',
+  },
+  {
+    type: 'completed',
+    color: 'green',
+  },
+];
+
+export const TASK_STATUSES: Record<TaskStatus, number> = {
+  'to-do': 0,
+  'in-progress': 1,
+  completed: 2,
+};
+
+export const TASK_PRIORITY: Record<TaskPriority, number> = {
+  low: 0,
+  medium: 1,
+  high: 2,
+};

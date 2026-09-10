@@ -2,6 +2,9 @@ import { Database } from '@shared/types/database.types';
 
 export interface TasksState {
   tasks: Task[];
+  filters: string[];
+  sortBy: SortOptions;
+  sortType: SortType;
   isLoading: boolean;
   error: boolean;
 }
@@ -9,6 +12,12 @@ export interface TasksState {
 export type TaskStatus = 'to-do' | 'in-progress' | 'completed';
 export type TaskPriority = 'low' | 'medium' | 'high';
 export type BoardView = 'kanban' | 'list' | 'calendar' | 'chart' | 'statistics';
+
+export type SortOptions = Extract<
+  keyof Task,
+  'title' | 'status' | 'position' | 'priority' | 'dueDate'
+>;
+export type SortType = 'asc' | 'desc';
 
 export interface Task {
   boardId: string;
@@ -32,3 +41,10 @@ export interface SafeAction {
   title: string;
   kbd: string;
 }
+
+export interface KanbanCol {
+  type: TaskStatus;
+  color: string;
+}
+
+export type TaskUpdates = Partial<RawTask>;

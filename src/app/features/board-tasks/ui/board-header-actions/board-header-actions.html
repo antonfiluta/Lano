@@ -1,11 +1,26 @@
-@for (action of actionButtons; track action.icon) {
-  <app-prime-button
-    [icon]="action.icon"
-    [pTooltip]="action.label"
-    class="size-8 rounded-md!"
-  >
-  </app-prime-button>
-}
+<app-prime-button
+  icon="sliders-h"
+  pTooltip="Filter"
+  class="size-8 rounded-md!"
+  (click)="sortPopover.toggle($event)"
+>
+</app-prime-button>
+
+<app-prime-button
+  icon="sort-alpha-down"
+  pTooltip="Sort"
+  class="size-8 rounded-md!"
+  (click)="sortPopover.toggle($event)"
+>
+</app-prime-button>
+
+<app-prime-button
+  icon="search"
+  pTooltip="Search"
+  class="size-8 rounded-md!"
+  (click)="sortPopover.toggle($event)"
+>
+</app-prime-button>
 
 <div class="bg-surface-200 dark:bg-surface-700 mx-2 h-4 w-px"></div>
 
@@ -17,3 +32,66 @@
   <i class="pi pi-plus text-xs!"></i>
   <span>New</span>
 </button>
+
+<p-popover #sortPopover>
+  <div class="flex w-56 flex-col">
+    <h3
+      class="text-surface-400 dark:text-surface-500 pb-2 text-[11px] font-semibold tracking-wider uppercase"
+    >
+      Sort by
+    </h3>
+
+    <div class="flex flex-col gap-0.5">
+      @for (opt of sortOptions; track opt.value) {
+        <button
+          type="button"
+          pButton
+          text
+          rounded
+          severity="secondary"
+          (click)="setSort(opt.value)"
+          class="hover:bg-surface-100/80 dark:hover:bg-surface-800/80 flex h-8 w-full cursor-pointer items-center gap-2.5 rounded-md px-2.5 text-sm font-normal transition-colors"
+          [class]="
+            sortOption() === opt.value
+              ? 'bg-surface-100 dark:bg-surface-800 text-surface-900 dark:text-surface-100'
+              : 'dark:text-surface-300 text-surface-600'
+          "
+        >
+          <i
+            [class]="'pi ' + opt.icon"
+            class="text-surface-400 dark:text-surface-500 text-xs"
+          ></i>
+          <span class="flex-1 text-left">{{ opt.label }}</span>
+          @if (sortOption() === opt.value) {
+            <i class="pi pi-check text-primary-500 text-xs"></i>
+          }
+        </button>
+      }
+    </div>
+
+    <div class="bg-surface-200 dark:bg-surface-700/80 mx-2 my-1.5 h-px"></div>
+
+    <div class="flex gap-1 px-2 pb-1">
+      @for (t of sortTypes; track t.value) {
+        <button
+          type="button"
+          pButton
+          text
+          rounded
+          severity="secondary"
+          (click)="setType(t.value)"
+          class="hover:bg-surface-100/10 flex-1 cursor-pointer justify-center gap-3 rounded-lg py-1.5 text-xs font-medium transition-all"
+          [class.text-surface-400]="sortType() !== t.value"
+          [class.dark:text-surface-500]="sortType() !== t.value"
+          [class.bg-surface-100]="sortType() === t.value"
+          [class.dark:bg-surface-800]="sortType() === t.value"
+          [class.text-surface-900]="sortType() === t.value"
+          [class.dark:text-surface-100]="sortType() === t.value"
+        >
+          <i [class]="'pi ' + t.icon" class="text-xs!"></i>
+          <span>{{ t.label }}</span>
+        </button>
+      }
+    </div>
+  </div>
+</p-popover>

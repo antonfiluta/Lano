@@ -156,7 +156,7 @@ export interface Database {
           position?: number;
           priority?: string | null;
           status?: string;
-          title: string;
+          title?: string;
         };
         Update: {
           assignee_id?: string | null;

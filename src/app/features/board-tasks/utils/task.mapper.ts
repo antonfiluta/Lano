@@ -5,7 +5,7 @@ import {
   TaskStatus,
 } from '../models/tasks.models';
 
-export function mapTask(raw: RawTask): Task {
+export function mapTaskToCamelCase(raw: RawTask): Task {
   return {
     boardId: raw.board_id,
     id: raw.id,
@@ -22,5 +22,5 @@ export function mapTask(raw: RawTask): Task {
 }
 
 export function mapTaskArray(rawArray: RawTask[]): Task[] {
-  return rawArray.map((rawTask) => mapTask(rawTask));
+  return rawArray.map((rawTask) => mapTaskToCamelCase(rawTask));
 }
