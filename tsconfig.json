@@ -43,7 +43,6 @@
     "strictInputAccessModifiers": true,
     "strictTemplates": true,
     "strictStandalone": true,
-    "fullTemplateTypeCheck": true,
     "disableTypeScriptVersionCheck": true,
     "extendedDiagnostics": {
       "defaultCategory": "error",

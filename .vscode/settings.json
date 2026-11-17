@@ -30,7 +30,6 @@
   },
 
   "eslint.useFlatConfig": true,
-  // Убираем "html" отсюда, так как angular-eslint настраивается внутри eslint.config.js
   "eslint.validate": ["typescript", "javascript"],
 
   "tailwindCSS.includeLanguages": {
@@ -48,8 +47,5 @@
 
   "css.validate": false,
   "less.validate": false,
-  "scss.validate": false,
-
-  // Исправлена опечатка в названии параметра (было strictdiit-types)
-  "angular.angular-language-service.enable-strict-template-type-checking": true
+  "scss.validate": false
 }
