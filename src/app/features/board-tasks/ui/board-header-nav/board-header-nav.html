@@ -1,0 +1,15 @@
+<nav class="flex items-center gap-1" aria-label="Board views">
+  @for (view of boardViews; track view.name) {
+    <a
+      [routerLink]="['/boards', boardId(), view.route]"
+      routerLinkActive="active-tab text-surface-900! dark:text-surface-100!"
+      class="tab-link group text-surface-500 hover:text-surface-800 dark:text-surface-400 dark:hover:text-surface-200 relative flex items-center gap-2 px-3 py-3 text-sm font-medium transition-colors"
+    >
+      <i
+        [class]="'pi pi-' + view.icon"
+        class="text-md opacity-60 transition-opacity group-hover:opacity-100"
+      ></i>
+      <span class="capitalize">{{ view.name }}</span>
+    </a>
+  }
+</nav>

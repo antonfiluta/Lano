@@ -1,31 +1,39 @@
 <aside
-  class="bg-surface-0 dark:bg-surface-900 border-surface-200 dark:border-surface-700 shadow-surface-200/50 flex h-full w-64 flex-col border-r shadow-xl dark:shadow-black/20"
+  class="block-bg flex h-full max-h-full flex-col justify-between p-4 transition-all duration-200"
+  [class]="isOpen() ? 'w-64' : 'w-16'"
 >
-  <div
-    class="border-surface-200 dark:border-surface-700 flex items-center gap-3 border-b px-6 py-5"
-  >
-    <app-logo [size]="'small'"></app-logo>
+  <div>
+    <app-logo [size]="isOpen() ? 'sm' : 'xs'" [onlyIcon]="!isOpen()"></app-logo>
+    <app-divider class="mt-3 mb-4 block"></app-divider>
+
+    <nav aria-label="Main navigation">
+      <app-nav></app-nav>
+      <app-divider class="mt-3 mb-4 block"></app-divider>
+      <app-board-nav></app-board-nav>
+    </nav>
   </div>
 
-  <nav class="flex-1 space-y-1 px-3 py-4">
-    @for (route of routes; track route.title) {
-      <a
-        class="text-surface-700 dark:text-surface-300 hover:bg-surface-100 dark:hover:bg-surface-800 flex items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium transition-colors"
-        [routerLink]="route.path"
-      >
-        <i [class]="'pi pi-' + route.icon"></i>
-        {{ route.title }}
-      </a>
-    }
-  </nav>
-
-  <div class="border-surface-200 dark:border-surface-700 border-t p-3">
+  <div>
+    <app-divider class="mt-3 mb-2 block"></app-divider>
     <button
       (click)="logout()"
-      class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-sm font-medium text-red-600 transition-colors hover:bg-red-50 dark:text-red-400 dark:hover:bg-red-900/20"
+      class="hover:bg-surface-100/40 dark:hover:bg-surface-800/80 flex w-full items-center rounded-lg py-1 text-sm font-medium text-red-600 transition-all duration-200 dark:text-red-400"
+      [class]="
+        isOpen()
+          ? 'my-[0.5px] gap-1.5 px-1.5 py-[5px]'
+          : 'my-[5px] justify-center gap-0 px-0 py-[0.5px]'
+      "
     >
-      <i class="pi pi-sign-out"></i>
-      Sign Out
+      <div class="flex size-7 items-center justify-center">
+        <i class="pi pi-sign-out"></i>
+      </div>
+
+      <span
+        class="inline-block overflow-hidden whitespace-nowrap transition-all duration-200"
+        [class]="isOpen() ? 'max-w-32 opacity-100' : 'max-w-0 opacity-0'"
+      >
+        Sign Out
+      </span>
     </button>
   </div>
 </aside>

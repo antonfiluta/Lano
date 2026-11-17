@@ -1,0 +1,26 @@
+.tab-link {
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0.75rem;
+    right: 0.75rem;
+    height: 2px;
+    border-radius: 9999px;
+    background-color: currentColor;
+    opacity: 0;
+    transform: scaleX(0.6);
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  &.active-tab {
+    &::after {
+      opacity: 1;
+      transform: scaleX(1);
+    }
+
+    i {
+      @apply opacity-100;
+    }
+  }
+}

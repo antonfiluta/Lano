@@ -5,22 +5,22 @@ import { toObservable } from '@angular/core/rxjs-interop';
 import { filter, firstValueFrom, take } from 'rxjs';
 import { RedirectService } from '@features/auth/services/redirect';
 
-export const authGuard = (isForAuthenticated: boolean): CanActivateFn => {
-  return async () => {
-    const authStore = inject(AuthStore);
-    const redirectService = inject(RedirectService);
+export const authGuard: CanActivateFn = async (route) => {
+  const authStore = inject(AuthStore);
+  const redirectService = inject(RedirectService);
 
-    await firstValueFrom(
-      toObservable(authStore.initialized).pipe(
-        filter((initialized) => initialized === true),
-        take(1),
-      ),
-    );
+  await firstValueFrom(
+    toObservable(authStore.initialized).pipe(
+      filter((initialized) => initialized === true),
+      take(1),
+    ),
+  );
 
-    if (isForAuthenticated !== authStore.isAuthenticated()) {
-      return redirectService.redirectUser(isForAuthenticated);
-    }
+  const requireAuth = route.data['requireAuth'] ?? true;
 
-    return true;
-  };
+  if (requireAuth !== authStore.isAuthenticated()) {
+    return redirectService.redirectUser(requireAuth);
+  }
+
+  return true;
 };

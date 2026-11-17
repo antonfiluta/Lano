@@ -1,0 +1,35 @@
+<div class="flex min-h-screen items-center justify-center p-4">
+  <div
+    class="bg-surface-0/70 dark:bg-surface-900/70 border-surface-200/50 dark:border-surface-700/50 shadow-surface-300/20 dark:shadow-surface-950/60 max-w-md rounded-2xl border p-8 text-center shadow-2xl backdrop-blur-xl transition-all duration-300"
+  >
+    <h1 class="text-surface-800 dark:text-surface-100 text-5xl font-bold">
+      404
+    </h1>
+    <p class="text-surface-700 dark:text-surface-300 mt-2 text-xl font-medium">
+      Page not found
+    </p>
+    <p class="text-surface-500 dark:text-surface-400 mt-1 text-sm">
+      The page you are looking for does not exist or has been moved.
+    </p>
+
+    <div class="mt-8">
+      <a
+        routerLink="/dashboard"
+        class="bg-primary-500 hover:bg-primary-600 dark:bg-primary-600 dark:hover:bg-primary-700 shadow-primary-500/30 inline-flex items-center gap-2 rounded-lg px-6 py-2.5 text-sm font-medium text-white shadow-lg transition-all duration-200"
+      >
+        <i class="pi pi-arrow-left"></i>
+        Go to Dashboard
+      </a>
+    </div>
+
+    <div class="text-surface-400 dark:text-surface-500 mt-4 text-xs">
+      <span>or </span>
+      <a
+        routerLink="/"
+        class="text-primary-600 dark:text-primary-400 hover:underline"
+      >
+        return to home
+      </a>
+    </div>
+  </div>
+</div>

@@ -1,9 +1,11 @@
 <p-toast key="global" stackVisibleLimit="7" />
 
-@if (authStore.initialized()) {
-  <!-- @if (authStore.initialized() && canActivate()) { -->
-  <!-- @if (false) { -->
-  <router-outlet></router-outlet>
-} @else {
-  <app-initial-page></app-initial-page>
-}
+<app-background>
+  @if (authStore.initialized()) {
+    <!-- @if (authStore.initialized() && canActivate()) { -->
+    <!-- @if (false) { -->
+    <router-outlet></router-outlet>
+  } @else {
+    <app-initial-page></app-initial-page>
+  }
+</app-background>

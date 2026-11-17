@@ -1,0 +1,46 @@
+.kanban-container {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(148, 163, 184, 0.3) transparent;
+}
+
+.kanban-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.kanban-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.kanban-container::-webkit-scrollbar-thumb {
+  background-color: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+.dark .kanban-container::-webkit-scrollbar-thumb {
+  background-color: rgba(71, 85, 105, 0.4);
+}
+
+.kanban-col {
+  max-height: 100%;
+}
+
+/* CDK Drag (ready) */
+.cdk-drag-preview .task-card {
+  transform: rotate(2deg) scale(1.02);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.cdk-drag-placeholder {
+  opacity: 0.4;
+  filter: grayscale(0.5);
+}
+
+.cdk-drop-list-dragging .task-card:not(.cdk-drag-placeholder) {
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.one-line {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

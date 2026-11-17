@@ -45,62 +45,33 @@ export interface Database {
       };
       boards: {
         Row: {
-          background: string | null;
+          background: string;
           created_at: string | null;
-          icon: string | null;
+          description: string;
+          icon: string;
           id: string;
           owner_id: string;
           title: string;
         };
         Insert: {
-          background?: string | null;
+          background?: string;
           created_at?: string | null;
-          icon?: string | null;
+          description?: string;
+          icon?: string;
           id?: string;
           owner_id: string;
-          title: string;
+          title?: string;
         };
         Update: {
-          background?: string | null;
+          background?: string;
           created_at?: string | null;
-          icon?: string | null;
+          description?: string;
+          icon?: string;
           id?: string;
           owner_id?: string;
           title?: string;
         };
         Relationships: [];
-      };
-      columns: {
-        Row: {
-          board_id: string;
-          color: string | null;
-          id: string;
-          position: number;
-          title: string;
-        };
-        Insert: {
-          board_id: string;
-          color?: string | null;
-          id?: string;
-          position?: number;
-          title: string;
-        };
-        Update: {
-          board_id?: string;
-          color?: string | null;
-          id?: string;
-          position?: number;
-          title?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'columns_board_id_fkey';
-            columns: ['board_id'];
-            isOneToOne: false;
-            referencedRelation: 'boards';
-            referencedColumns: ['id'];
-          },
-        ];
       };
       comments: {
         Row: {
@@ -161,54 +132,65 @@ export interface Database {
       tasks: {
         Row: {
           assignee_id: string | null;
-          column_id: string;
-          created_at: string | null;
+          board_id: string;
+          created_at: string;
           created_by: string;
           description: string | null;
           due_date: string | null;
+          hidden: boolean;
           id: string;
           position: number;
           priority: string | null;
+          status: string;
           title: string;
         };
         Insert: {
           assignee_id?: string | null;
-          column_id: string;
-          created_at?: string | null;
+          board_id: string;
+          created_at?: string;
           created_by: string;
           description?: string | null;
           due_date?: string | null;
+          hidden?: boolean;
           id?: string;
           position?: number;
           priority?: string | null;
-          title: string;
+          status?: string;
+          title?: string;
         };
         Update: {
           assignee_id?: string | null;
-          column_id?: string;
-          created_at?: string | null;
+          board_id?: string;
+          created_at?: string;
           created_by?: string;
           description?: string | null;
           due_date?: string | null;
+          hidden?: boolean;
           id?: string;
           position?: number;
           priority?: string | null;
+          status?: string;
           title?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'tasks_column_id_fkey';
-            columns: ['column_id'];
+            foreignKeyName: 'tasks_board_id_fkey';
+            columns: ['board_id'];
             isOneToOne: false;
-            referencedRelation: 'columns';
+            referencedRelation: 'boards';
             referencedColumns: ['id'];
           },
         ];
       };
     };
     Views: Record<never, never>;
-    Functions: Record<never, never>;
-    Enums: Record<never, never>;
+    Functions: {
+      get_dashboard_stats: { Args: never; Returns: Json };
+      user_has_board_access: { Args: { board_uuid: string }; Returns: boolean };
+    };
+    Enums: {
+      TaskStatus: 'to-do' | 'in-progress' | 'completed';
+    };
     CompositeTypes: Record<never, never>;
   };
 }
@@ -335,6 +317,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      TaskStatus: ['to-do', 'in-progress', 'completed'],
+    },
   },
 } as const;

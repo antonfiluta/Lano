@@ -1,0 +1,12 @@
+<!-- TODO: Add Loading Skeleton -->
+@if (board(); as board) {
+  <app-board-header [board]="board"></app-board-header>
+
+  <div class="mt-5 flex-1">
+    <router-outlet></router-outlet>
+  </div>
+} @else {
+  <div class="flex h-full items-center justify-center">
+    <p class="text-surface-500">Board not found</p>
+  </div>
+}

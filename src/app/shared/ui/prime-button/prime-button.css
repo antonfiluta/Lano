@@ -1,0 +1,8 @@
+::ng-deep .p-tooltip-arrow {
+  display: none;
+}
+
+::ng-deep .p-tooltip-text {
+  @reference "tailwindcss";
+  @apply rounded-sm! px-1.5! py-1! text-xs! shadow-md;
+}

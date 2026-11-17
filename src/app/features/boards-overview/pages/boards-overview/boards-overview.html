@@ -1,0 +1,132 @@
+<div class="space-y-8">
+  <section class="flex flex-wrap items-center justify-between gap-4">
+    <div>
+      <h1 class="text-surface-800 dark:text-surface-100 text-2xl font-bold">
+        My Boards
+      </h1>
+      <p class="text-surface-500 dark:text-surface-400 text-sm">
+        Manage your projects and tasks
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <div class="relative">
+        <i
+          class="pi pi-search text-surface-400 dark:text-surface-500 absolute top-1/2 left-3 -translate-y-1/2"
+        ></i>
+        <input
+          type="text"
+          placeholder="Search boards..."
+          class="border-surface-200/50 focus:border-primary-400 focus:ring-primary-400/20 dark:border-surface-700/50 dark:bg-surface-900/70 dark:focus:border-primary-500 w-48 rounded-lg border bg-white/70 px-10 py-2 text-sm backdrop-blur-sm focus:ring-2 focus:outline-none"
+          [formControl]="searchControl"
+        />
+      </div>
+      <button
+        (click)="addBoard()"
+        class="bg-primary-500 shadow-primary-500/30 hover:bg-primary-600 hover:shadow-primary-500/40 dark:bg-primary-600 dark:hover:bg-primary-700 inline-flex items-center gap-2 rounded-lg px-4 py-2 text-sm font-medium text-white shadow-lg transition-all"
+      >
+        <i class="pi pi-plus"></i>
+        <span>New Board</span>
+      </button>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-2 gap-4 sm:grid-cols-4">
+    @for (stat of statCards; track stat.valueName) {
+      <div
+        class="animate-card border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 rounded-xl border bg-white/70 p-4 shadow-sm backdrop-blur-sm transition-all hover:shadow-md"
+      >
+        @if (statValues(); as values) {
+          <div class="mb-2 flex items-center gap-2">
+            <i [class]="'pi ' + stat.icon + ' text-lg ' + stat.color"></i>
+            <span class="text-surface-500 dark:text-surface-400 text-sm">
+              {{ stat.label }}
+            </span>
+          </div>
+          <p
+            class="text-surface-800 dark:text-surface-100 flex text-2xl font-bold"
+          >
+            {{ values[stat.valueName] || '' }}
+          </p>
+        } @else {
+          <div class="mb-2 flex gap-2">
+            <p-skeleton shape="circle" size="1.4rem" />
+            <p-skeleton height="1.4rem" width="10.5rem" />
+          </div>
+          <p-skeleton height="1.5rem" width="4.5rem" />
+        }
+      </div>
+    }
+  </section>
+
+  <section>
+    <h2
+      class="text-surface-700 dark:text-surface-300 mb-4 text-lg font-semibold"
+    >
+      All Boards ({{ filteredBoards().length }})
+    </h2>
+
+    <div
+      class="animate-card grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
+    >
+      @for (board of filteredBoards(); track board.id) {
+        <a
+          [routerLink]="['/boards', board.id]"
+          class="group border-surface-200/50 dark:border-surface-700/50 dark:bg-surface-900/70 relative overflow-hidden rounded-xl border bg-white/70 p-5 shadow-sm backdrop-blur-sm transition-all hover:scale-[1.02] hover:shadow-md"
+        >
+          <div
+            class="absolute inset-0 bg-linear-to-br opacity-0 transition-opacity group-hover:opacity-10"
+            [class]="board.background"
+          ></div>
+
+          <div class="relative flex items-start justify-between">
+            <div class="flex items-center gap-3">
+              <div
+                class="bg-primary-500/10 text-primary-600 dark:bg-primary-400/10 dark:text-primary-400 flex h-10 w-10 items-center justify-center rounded-lg"
+              >
+                <i [class]="'pi pi-' + board.icon"></i>
+              </div>
+              <div>
+                <h3 class="text-surface-800 dark:text-surface-100 font-medium">
+                  {{ board.title }}
+                </h3>
+                <p class="text-surface-500 dark:text-surface-400 text-sm">
+                  {{ board.tasks }} tasks
+                </p>
+              </div>
+            </div>
+            <i
+              class="pi pi-chevron-right text-surface-400 dark:text-surface-500 transition-transform group-hover:translate-x-1"
+            ></i>
+          </div>
+
+          <div
+            class="bg-surface-200 dark:bg-surface-700 relative mt-4 h-1.5 w-full rounded-full"
+          >
+            <div
+              class="bg-primary-500 group-hover:bg-primary-400 h-full rounded-full transition-all duration-500"
+              [style.width.%]="board.progress"
+            ></div>
+          </div>
+          <div class="relative mt-1 flex justify-end">
+            <span class="text-surface-400 dark:text-surface-500 text-xs"
+              >{{ board.progress }}%</span
+            >
+          </div>
+        </a>
+      }
+
+      <button
+        (click)="addBoard()"
+        class="group border-surface-300/50 hover:border-primary-400/50 hover:bg-primary-500/5 dark:border-surface-600/50 dark:bg-surface-900/40 dark:hover:border-primary-400/40 flex cursor-pointer flex-col items-center justify-center rounded-xl border-2 border-dashed bg-white/40 p-8 backdrop-blur-sm transition-all disabled:cursor-not-allowed disabled:grayscale-75"
+        [disabled]="isStoreLoading()"
+      >
+        <div
+          class="text-surface-400 dark:text-surface-500 group-hover:text-primary-500 flex flex-col items-center gap-2 transition-colors"
+        >
+          <i class="pi pi-plus text-3xl"></i>
+          <span class="text-sm font-medium">Create New Board</span>
+        </div>
+      </button>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,159 @@
+<div class="kanban-container flex h-full gap-5 overflow-x-auto pb-2">
+  @for (col of cols; track col.type) {
+    <div
+      class="kanban-col border-surface-200/50 dark:border-surface-800/50 bg-surface-0/40 dark:bg-surface-900/30 flex w-80 shrink-0 flex-col gap-3 rounded-2xl border px-3 py-3 shadow-sm"
+    >
+      <div class="flex items-center justify-between px-1">
+        <div class="flex items-center gap-2.5">
+          <span
+            class="size-2 rounded-full"
+            [class]="getStatusDot(col.type)"
+          ></span>
+          <h3
+            class="text-surface-700 dark:text-surface-200 text-sm font-semibold tracking-tight capitalize"
+          >
+            {{ formatStatus(col.type) }}
+          </h3>
+          <span
+            class="bg-surface-100/80 dark:bg-surface-800/80 text-surface-500 dark:text-surface-400 rounded-md px-1.5 py-0.5 text-[11px] font-medium tabular-nums"
+          >
+            {{ tasks()[col.type].length }}
+          </span>
+        </div>
+
+        <button
+          type="button"
+          class="text-surface-400 hover:text-surface-700 hover:bg-surface-100/80 dark:text-surface-500 dark:hover:bg-surface-800/60 dark:hover:text-surface-300 flex h-7 w-7 items-center justify-center rounded-lg transition-colors"
+          (click)="addTask(col.type)"
+        >
+          <i class="pi pi-plus text-xs"></i>
+        </button>
+      </div>
+
+      <div
+        class="flex flex-1 flex-col gap-2 overflow-y-auto pr-1"
+        cdkDropList
+        [id]="col.type"
+        [cdkDropListData]="tasks()[col.type]"
+        [cdkDropListConnectedTo]="dropListIds"
+        (cdkDropListDropped)="onDrop($event)"
+      >
+        @for (task of tasks()[col.type]; track task.id) {
+          <div
+            cdkDrag
+            (click)="openTask(task)"
+            (keydown.enter)="openTask(task)"
+            (keydown.space)="openTask(task); $event.preventDefault()"
+            tabindex="0"
+            role="button"
+            [cdkDragData]="task"
+            class="task-card group border-surface-200/50 dark:border-surface-800/50 dark:bg-surface-900/60 dark:hover:bg-surface-900/80 relative cursor-pointer overflow-hidden rounded-xl border bg-white/70 p-3 transition-colors hover:bg-white"
+          >
+            <div class="mb-1.5 flex items-start justify-between gap-2">
+              <div class="flex min-w-0 items-center gap-1.5">
+                <i
+                  class="pi pi-check-circle text-surface-400 dark:text-surface-500 mt-0.5 shrink-0 text-sm!"
+                ></i>
+                <h4
+                  class="text-surface-800 dark:text-surface-100 text-sm leading-snug font-semibold"
+                >
+                  {{ task.title || 'New Task' }}
+                </h4>
+              </div>
+
+              @if (task.dueDate) {
+                <span
+                  class="text-surface-400 dark:text-surface-500 bg-surface-100/60 dark:bg-surface-800/60 flex shrink-0 items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] duration-200 group-hover:translate-x-10 group-hover:opacity-0"
+                >
+                  <i class="pi pi-calendar text-[10px]!"></i>
+                  {{ task.dueDate | date: 'MMM d' }}
+                </span>
+              }
+            </div>
+
+            @if (task.description) {
+              <p
+                class="one-line text-surface-500 dark:text-surface-400 block pr-6 text-xs leading-relaxed"
+              >
+                {{ task.description }}
+              </p>
+            }
+
+            <div class="mt-2.5 flex items-center justify-between">
+              @if (task.assigneeId) {
+                <div
+                  class="bg-primary-50 text-primary-600 dark:bg-primary-900/20 dark:text-primary-400 dark:ring-surface-800 flex size-5 items-center justify-center rounded-full text-[9px] font-bold ring-1 ring-white"
+                >
+                  {{ 'AF' }}
+                </div>
+              } @else {
+                <span></span>
+              }
+
+              @if (task.priority) {
+                <span
+                  class="text-surface-400 dark:text-surface-500 text-[10px] font-medium uppercase"
+                >
+                  {{ task.priority }}
+                </span>
+              }
+            </div>
+
+            <div
+              class="absolute top-2 right-2 z-10 flex gap-1 opacity-0 group-hover:opacity-100"
+              [class]="
+                task.dueDate
+                  ? '-translate-x-10 transition-transform duration-300 group-hover:translate-x-0'
+                  : 'transition-opacity duration-200'
+              "
+            >
+              <button
+                type="button"
+                class="dark:bg-surface-800/90 text-surface-500 dark:text-surface-400 border-surface-200/60 dark:border-surface-700/60 flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border bg-white/90 shadow-sm hover:border-red-500/50! hover:bg-red-50! hover:text-red-500! dark:hover:bg-red-900/20!"
+                (click)="$event.stopPropagation(); deleteTask(task.id)"
+              >
+                <i class="pi pi-trash text-xs!"></i>
+              </button>
+
+              <button
+                type="button"
+                class="dark:bg-surface-800/90 border-surface-200/60 dark:border-surface-700/60 text-surface-500 dark:text-surface-400 dark:hover:bg-white-900/20! flex h-6 w-6 cursor-pointer items-center justify-center rounded-md border bg-white/90 shadow-sm hover:border-black/50! hover:text-black! dark:hover:border-white/50! dark:hover:text-white!"
+                (click)="$event.stopPropagation(); openTask(task)"
+              >
+                <i class="pi pi-file-edit text-xs!"></i>
+              </button>
+            </div>
+          </div>
+        } @empty {
+          <!-- Empty State -->
+          <div
+            class="border-surface-200/60 dark:border-surface-700/30 flex flex-col items-center justify-center rounded-xl border border-dashed py-8"
+          >
+            <div
+              class="bg-surface-100 dark:bg-surface-800 mb-2 flex size-8 items-center justify-center rounded-full"
+            >
+              <i
+                class="pi pi-inbox text-surface-300 dark:text-surface-600 text-xs"
+              ></i>
+            </div>
+            <span
+              class="text-surface-400 dark:text-surface-500 text-xs font-medium"
+            >
+              No tasks yet
+            </span>
+          </div>
+        }
+      </div>
+
+      <!-- Add Task -->
+      <button
+        type="button"
+        class="text-surface-500 hover:text-surface-700 hover:bg-surface-100/90 dark:text-surface-400 dark:hover:bg-surface-800/40 dark:hover:text-surface-200 border-surface-300/50 dark:border-surface-700/40 group flex w-full items-center justify-center gap-2 rounded-lg border border-dashed py-2 text-xs font-medium transition-colors"
+        (click)="addTask(col.type)"
+      >
+        <i class="pi pi-plus text-[10px]!"></i>
+        <span>Add task</span>
+      </button>
+    </div>
+  }
+</div>

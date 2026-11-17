@@ -4,16 +4,23 @@ import {
   provideAppInitializer,
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  TitleStrategy,
+  withComponentInputBinding,
+} from '@angular/router';
 import { providePrimeNG } from 'primeng/config';
 import { routes } from './app.routes';
 import { AuthStore } from '@core/stores/auth.store';
 import Aura from '@primeuix/themes/aura';
 import { ThemeStore } from '@core/stores/theme.store';
 import { MessageService } from 'primeng/api';
+import { SupabaseService } from '@core/services/supabase.service';
+import { AppTitleStrategy } from '@core/services/title.strategy';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    { provide: TitleStrategy, useClass: AppTitleStrategy },
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes, withComponentInputBinding()),
     providePrimeNG({
@@ -28,6 +35,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => {
       inject(ThemeStore);
       inject(AuthStore);
+      inject(SupabaseService);
     }),
   ],
 };

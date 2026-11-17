@@ -1,0 +1,11 @@
+<button
+  pButton
+  text
+  [severity]="severity()"
+  [class]="class()"
+  [pTooltip]="pTooltip()"
+  tooltipPosition="top"
+  (click)="action.emit()"
+>
+  <i [class]="`pi pi-${icon()} ${iconSize()}`"></i>
+</button>
